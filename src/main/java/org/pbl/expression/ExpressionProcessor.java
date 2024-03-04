@@ -1,5 +1,7 @@
 package org.pbl.expression;
 
+import org.pbl.antlr.GrammarParser;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -25,8 +27,24 @@ public class ExpressionProcessor {
             if (e instanceof VariableDeclaration) {
                 VariableDeclaration vd = (VariableDeclaration) e;
                 values.put(vd.id, vd.value);
+            } else if (e instanceof FunctionCall) {
+
+                FunctionCall fc = (FunctionCall) e;
+                String id = fc.id;
+                Expression value = fc.value;
+                int extractedValue = getEvalResult(value);
+
+                switch (id) {
+                    case "tva":
+                        System.out.println("Value " + extractedValue + " has TVA: " + (extractedValue * 0.2));
+                        break;
+                    default:
+                        System.out.println("Function " + id + " not found");
+                }
             } else { // Number or Variable or Addition or Multiplication
-                String input = e.toString();
+//                String input = e.toString();
+                String input = (e != null) ? e.toString() : "null";
+
                 int result = getEvalResult(e);
                 evaluations.add(input + " is " + result);
             }

@@ -39,7 +39,7 @@ public class AntlrToExpression extends GrammarBaseVisitor<Expression> {
     }
 
     @Override
-    public Expression visitMultiplication(org.pbl.antlr.GrammarParser.MultiplicationContext ctx) {
+    public Expression visitMultiplication(GrammarParser.MultiplicationContext ctx) {
 
         Expression left = visit(ctx.getChild(0));
         Expression right = visit(ctx.getChild(2));
@@ -48,7 +48,7 @@ public class AntlrToExpression extends GrammarBaseVisitor<Expression> {
     }
 
     @Override
-    public Expression visitAddition(org.pbl.antlr.GrammarParser.AdditionContext ctx) {
+    public Expression visitAddition(GrammarParser.AdditionContext ctx) {
 
         Expression left = visit(ctx.getChild(0));
         Expression right = visit(ctx.getChild(2));
@@ -57,7 +57,7 @@ public class AntlrToExpression extends GrammarBaseVisitor<Expression> {
     }
 
     @Override
-    public Expression visitVariable(org.pbl.antlr.GrammarParser.VariableContext ctx) {
+    public Expression visitVariable(GrammarParser.VariableContext ctx) {
 
         Token idToken = ctx.ID().getSymbol();
         int line = idToken.getLine();
@@ -78,5 +78,15 @@ public class AntlrToExpression extends GrammarBaseVisitor<Expression> {
         int num = Integer.parseInt(numText);
 
         return new Number(num);
+    }
+
+
+    @Override
+    public Expression visitFunctionCall(GrammarParser.FunctionCallContext ctx) {
+
+        String id = ctx.ID().getText();
+        Expression expression = visit(ctx.getChild(2));
+
+        return new FunctionCall(id, expression);
     }
 }
