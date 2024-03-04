@@ -1,5 +1,6 @@
 i: INTEGER = 5
-j: INTEGER = 7
+i: INTEGER = 7
+j = i + 23 : INTEGER
 i
 j
 i + j

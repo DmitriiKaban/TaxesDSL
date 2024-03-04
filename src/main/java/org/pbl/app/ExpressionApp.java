@@ -8,6 +8,7 @@ import org.pbl.antlr.GrammarLexer;
 import org.pbl.antlr.GrammarParser;
 import org.pbl.expression.AntlrToProgram;
 import org.pbl.expression.ExpressionProcessor;
+import org.pbl.expression.MyErrorListener;
 import org.pbl.expression.Program;
 
 import java.io.IOException;
@@ -24,6 +25,10 @@ public class ExpressionApp {
             GrammarParser parser = getParser(fileName);
 
             ParseTree antlrAST = parser.prog();
+
+            if (MyErrorListener.hasError) {
+                return;
+            }
 
             // create visitor to receive expression objects
             AntlrToProgram programVisitor = new AntlrToProgram();
@@ -56,6 +61,10 @@ public class ExpressionApp {
             GrammarLexer lexer = new GrammarLexer(input);
             CommonTokenStream tokens = new CommonTokenStream(lexer);
             parser = new GrammarParser(tokens);
+
+            // syntax error handling
+            parser.removeErrorListeners();
+            parser.addErrorListener(new MyErrorListener());
 
         } catch (IOException e) {
             e.printStackTrace();
