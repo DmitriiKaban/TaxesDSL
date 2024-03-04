@@ -1,4 +1,4 @@
-grammar Hello;
+grammar Grammar;
 
 // will import antlr in generated files
 @header {
@@ -6,17 +6,17 @@ grammar Hello;
 }
 
 // Star Variable
-prog: (decl | expr)+ EOF
+prog: (decl | expr)+ EOF        # Program
     ;
 
-decl: ID ':' INT_TYPE '=' NUM
+decl: ID ':' INT_TYPE '=' NUM   # Declaration
     ;
 
 // * sooner than +, so that * can be evaluated first
-expr: expr '*' expr
-    | expr '+' expr
-    | ID
-    | NUM
+expr: expr '*' expr     # Multiplication
+    | expr '+' expr     # Addition
+    | ID                # Variable
+    | NUM               # Number
     ;
 
 ID : [a-z][a-zA-Z0-9_]*;

@@ -1,0 +1,4 @@
+i: INTEGER = 5
+i: INTEGER = 6
+i + 23
+24 + k
