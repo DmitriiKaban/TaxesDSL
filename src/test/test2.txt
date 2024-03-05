@@ -1,6 +1,5 @@
-i: INTEGER = 5
-//i: INTEGER = 6
-i + 23
-j: INTEGER = tva(i)
-j + 5
-//24 + k
+i : INTEGER = 5
+print(i)
+tva ( i )
+j : INTEGER = tva(i)
+print(j)

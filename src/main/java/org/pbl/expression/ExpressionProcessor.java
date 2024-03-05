@@ -11,7 +11,7 @@ public class ExpressionProcessor {
 
     List<Expression> list;
 
-    public Map<String, Integer> values; // symbol table for variables and their values
+    public Map<String, Double> values; // symbol table for variables and their values
 
     public ExpressionProcessor(List<Expression> list) {
         this.list = list;
@@ -25,27 +25,37 @@ public class ExpressionProcessor {
         for (Expression e : list) {
 
             if (e instanceof VariableDeclaration) {
+
                 VariableDeclaration vd = (VariableDeclaration) e;
-                values.put(vd.id, vd.value);
+
+                double value = getEvalResult(vd.value);
+                values.put(vd.id, value);
             } else if (e instanceof FunctionCall) {
 
                 FunctionCall fc = (FunctionCall) e;
                 String id = fc.id;
                 Expression value = fc.value;
-                int extractedValue = getEvalResult(value);
+                double extractedValue = getEvalResult(value);
 
                 switch (id) {
                     case "tva":
-                        System.out.println("Value " + extractedValue + " has TVA: " + (extractedValue * 0.2));
+                        evaluations.add("Value " + extractedValue + " has TVA: " + (extractedValue * 0.2));
+//                        System.out.println("Value " + extractedValue + " has TVA: " + (extractedValue * 0.2));
+                        break;
+                    case "print":
+                        evaluations.add(String.valueOf(extractedValue));
+                        break;
+                    case "impozitulPeVenit":
+                        evaluations.add("Impozitul pe venit: " + (extractedValue * 0.12) + ", remaining sum: " + (extractedValue * 0.88));
                         break;
                     default:
-                        System.out.println("Function " + id + " not found");
+                        evaluations.add("Function " + id + " not found");
                 }
             } else { // Number or Variable or Addition or Multiplication
 //                String input = e.toString();
                 String input = (e != null) ? e.toString() : "null";
 
-                int result = getEvalResult(e);
+                double result = getEvalResult(e);
                 evaluations.add(input + " is " + result);
             }
         }
@@ -53,9 +63,9 @@ public class ExpressionProcessor {
         return evaluations;
     }
 
-    private int getEvalResult(Expression e) {
+    private double getEvalResult(Expression e) {
 
-        int result = 0;
+        double result = 0;
 
         if (e instanceof Number) {
             Number n = (Number) e;
@@ -69,6 +79,25 @@ public class ExpressionProcessor {
         } else if (e instanceof Multiplication) {
             Multiplication m = (Multiplication) e;
             result = getEvalResult(m.left) * getEvalResult(m.right);
+        } else if (e instanceof FunctionCall) {
+            FunctionCall fc = (FunctionCall) e;
+            String id = fc.id;
+            Expression value = fc.value;
+            double extractedValue = getEvalResult(value);
+
+            switch (id) {
+                case "tva":
+                    result = extractedValue * 0.2;
+                    break;
+                case "print":
+                    System.out.println(extractedValue);
+                    break;
+                case "impozitulPeVenit":
+                    result = extractedValue * 0.12;
+                    break;
+                default:
+                    System.out.println("Function " + id + " not found");
+            }
         }
 
         return result;

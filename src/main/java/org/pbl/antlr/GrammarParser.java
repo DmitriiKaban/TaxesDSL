@@ -20,7 +20,7 @@ public class GrammarParser extends Parser {
 		new PredictionContextCache();
 	public static final int
 		T__0=1, T__1=2, T__2=3, T__3=4, ID=5, NUM=6, COMMENT=7, WS=8, INT_TYPE=9, 
-		COMMA=10, LPAREN=11, RPAREN=12;
+		DOUBLE_TYPE=10, COMMA=11, LPAREN=12, RPAREN=13, SEMI=14, FUNC=15;
 	public static final int
 		RULE_prog = 0, RULE_decl = 1, RULE_methodCall = 2, RULE_expr = 3;
 	private static String[] makeRuleNames() {
@@ -33,14 +33,14 @@ public class GrammarParser extends Parser {
 	private static String[] makeLiteralNames() {
 		return new String[] {
 			null, "':'", "'='", "'*'", "'+'", null, null, null, null, "'INTEGER'", 
-			"','", "'('", "')'"
+			"'DOUBLE'", "','", "'('", "')'", "';'", "'function'"
 		};
 	}
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
 	private static String[] makeSymbolicNames() {
 		return new String[] {
 			null, null, null, null, null, "ID", "NUM", "COMMENT", "WS", "INT_TYPE", 
-			"COMMA", "LPAREN", "RPAREN"
+			"DOUBLE_TYPE", "COMMA", "LPAREN", "RPAREN", "SEMI", "FUNC"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -121,12 +121,6 @@ public class GrammarParser extends Parser {
 		public ExprContext expr(int i) {
 			return getRuleContext(ExprContext.class,i);
 		}
-		public List<MethodCallContext> methodCall() {
-			return getRuleContexts(MethodCallContext.class);
-		}
-		public MethodCallContext methodCall(int i) {
-			return getRuleContext(MethodCallContext.class,i);
-		}
 		public ProgramContext(ProgContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
@@ -151,12 +145,12 @@ public class GrammarParser extends Parser {
 			_localctx = new ProgramContext(_localctx);
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(11); 
+			setState(10); 
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			do {
 				{
-				setState(11);
+				setState(10);
 				_errHandler.sync(this);
 				switch ( getInterpreter().adaptivePredict(_input,0,_ctx) ) {
 				case 1:
@@ -171,19 +165,13 @@ public class GrammarParser extends Parser {
 					expr(0);
 					}
 					break;
-				case 3:
-					{
-					setState(10);
-					methodCall();
-					}
-					break;
 				}
 				}
-				setState(13); 
+				setState(12); 
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			} while ( _la==ID || _la==NUM );
-			setState(15);
+			setState(14);
 			match(EOF);
 			}
 		}
@@ -213,8 +201,11 @@ public class GrammarParser extends Parser {
 	@SuppressWarnings("CheckReturnValue")
 	public static class DeclarationContext extends DeclContext {
 		public TerminalNode ID() { return getToken(GrammarParser.ID, 0); }
+		public ExprContext expr() {
+			return getRuleContext(ExprContext.class,0);
+		}
 		public TerminalNode INT_TYPE() { return getToken(GrammarParser.INT_TYPE, 0); }
-		public TerminalNode NUM() { return getToken(GrammarParser.NUM, 0); }
+		public TerminalNode DOUBLE_TYPE() { return getToken(GrammarParser.DOUBLE_TYPE, 0); }
 		public DeclarationContext(DeclContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
@@ -234,20 +225,29 @@ public class GrammarParser extends Parser {
 	public final DeclContext decl() throws RecognitionException {
 		DeclContext _localctx = new DeclContext(_ctx, getState());
 		enterRule(_localctx, 2, RULE_decl);
+		int _la;
 		try {
 			_localctx = new DeclarationContext(_localctx);
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(17);
+			setState(16);
 			match(ID);
-			setState(18);
+			setState(17);
 			match(T__0);
+			setState(18);
+			_la = _input.LA(1);
+			if ( !(_la==INT_TYPE || _la==DOUBLE_TYPE) ) {
+			_errHandler.recoverInline(this);
+			}
+			else {
+				if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+				_errHandler.reportMatch(this);
+				consume();
+			}
 			setState(19);
-			match(INT_TYPE);
-			setState(20);
 			match(T__1);
-			setState(21);
-			match(NUM);
+			setState(20);
+			expr(0);
 			}
 		}
 		catch (RecognitionException re) {
@@ -263,36 +263,27 @@ public class GrammarParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class MethodCallContext extends ParserRuleContext {
-		public MethodCallContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_methodCall; }
-	 
-		public MethodCallContext() { }
-		public void copyFrom(MethodCallContext ctx) {
-			super.copyFrom(ctx);
-		}
-	}
-	@SuppressWarnings("CheckReturnValue")
-	public static class FunctionCallContext extends MethodCallContext {
 		public TerminalNode ID() { return getToken(GrammarParser.ID, 0); }
 		public TerminalNode LPAREN() { return getToken(GrammarParser.LPAREN, 0); }
 		public ExprContext expr() {
 			return getRuleContext(ExprContext.class,0);
 		}
 		public TerminalNode RPAREN() { return getToken(GrammarParser.RPAREN, 0); }
-		public FunctionCallContext(MethodCallContext ctx) { copyFrom(ctx); }
+		public MethodCallContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_methodCall; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof GrammarListener ) ((GrammarListener)listener).enterFunctionCall(this);
+			if ( listener instanceof GrammarListener ) ((GrammarListener)listener).enterMethodCall(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof GrammarListener ) ((GrammarListener)listener).exitFunctionCall(this);
+			if ( listener instanceof GrammarListener ) ((GrammarListener)listener).exitMethodCall(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof GrammarVisitor ) return ((GrammarVisitor<? extends T>)visitor).visitFunctionCall(this);
+			if ( visitor instanceof GrammarVisitor ) return ((GrammarVisitor<? extends T>)visitor).visitMethodCall(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -301,16 +292,15 @@ public class GrammarParser extends Parser {
 		MethodCallContext _localctx = new MethodCallContext(_ctx, getState());
 		enterRule(_localctx, 4, RULE_methodCall);
 		try {
-			_localctx = new FunctionCallContext(_localctx);
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(23);
+			setState(22);
 			match(ID);
-			setState(24);
+			setState(23);
 			match(LPAREN);
-			setState(25);
+			setState(24);
 			expr(0);
-			setState(26);
+			setState(25);
 			match(RPAREN);
 			}
 		}
@@ -335,6 +325,26 @@ public class GrammarParser extends Parser {
 		public ExprContext() { }
 		public void copyFrom(ExprContext ctx) {
 			super.copyFrom(ctx);
+		}
+	}
+	@SuppressWarnings("CheckReturnValue")
+	public static class MethodExprCallContext extends ExprContext {
+		public MethodCallContext methodCall() {
+			return getRuleContext(MethodCallContext.class,0);
+		}
+		public MethodExprCallContext(ExprContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof GrammarListener ) ((GrammarListener)listener).enterMethodExprCall(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof GrammarListener ) ((GrammarListener)listener).exitMethodExprCall(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof GrammarVisitor ) return ((GrammarVisitor<? extends T>)visitor).visitMethodExprCall(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 	@SuppressWarnings("CheckReturnValue")
@@ -437,28 +447,35 @@ public class GrammarParser extends Parser {
 			{
 			setState(31);
 			_errHandler.sync(this);
-			switch (_input.LA(1)) {
-			case ID:
+			switch ( getInterpreter().adaptivePredict(_input,2,_ctx) ) {
+			case 1:
 				{
 				_localctx = new VariableContext(_localctx);
 				_ctx = _localctx;
 				_prevctx = _localctx;
 
-				setState(29);
+				setState(28);
 				match(ID);
 				}
 				break;
-			case NUM:
+			case 2:
 				{
 				_localctx = new NumberContext(_localctx);
 				_ctx = _localctx;
 				_prevctx = _localctx;
-				setState(30);
+				setState(29);
 				match(NUM);
 				}
 				break;
-			default:
-				throw new NoViableAltException(this);
+			case 3:
+				{
+				_localctx = new MethodExprCallContext(_localctx);
+				_ctx = _localctx;
+				_prevctx = _localctx;
+				setState(30);
+				methodCall();
+				}
+				break;
 			}
 			_ctx.stop = _input.LT(-1);
 			setState(41);
@@ -477,11 +494,11 @@ public class GrammarParser extends Parser {
 						_localctx = new MultiplicationContext(new ExprContext(_parentctx, _parentState));
 						pushNewRecursionContext(_localctx, _startState, RULE_expr);
 						setState(33);
-						if (!(precpred(_ctx, 4))) throw new FailedPredicateException(this, "precpred(_ctx, 4)");
+						if (!(precpred(_ctx, 5))) throw new FailedPredicateException(this, "precpred(_ctx, 5)");
 						setState(34);
 						match(T__2);
 						setState(35);
-						expr(5);
+						expr(6);
 						}
 						break;
 					case 2:
@@ -489,11 +506,11 @@ public class GrammarParser extends Parser {
 						_localctx = new AdditionContext(new ExprContext(_parentctx, _parentState));
 						pushNewRecursionContext(_localctx, _startState, RULE_expr);
 						setState(36);
-						if (!(precpred(_ctx, 3))) throw new FailedPredicateException(this, "precpred(_ctx, 3)");
+						if (!(precpred(_ctx, 4))) throw new FailedPredicateException(this, "precpred(_ctx, 4)");
 						setState(37);
 						match(T__3);
 						setState(38);
-						expr(4);
+						expr(5);
 						}
 						break;
 					}
@@ -526,43 +543,43 @@ public class GrammarParser extends Parser {
 	private boolean expr_sempred(ExprContext _localctx, int predIndex) {
 		switch (predIndex) {
 		case 0:
-			return precpred(_ctx, 4);
+			return precpred(_ctx, 5);
 		case 1:
-			return precpred(_ctx, 3);
+			return precpred(_ctx, 4);
 		}
 		return true;
 	}
 
 	public static final String _serializedATN =
-		"\u0004\u0001\f-\u0002\u0000\u0007\u0000\u0002\u0001\u0007\u0001\u0002"+
-		"\u0002\u0007\u0002\u0002\u0003\u0007\u0003\u0001\u0000\u0001\u0000\u0001"+
-		"\u0000\u0004\u0000\f\b\u0000\u000b\u0000\f\u0000\r\u0001\u0000\u0001\u0000"+
+		"\u0004\u0001\u000f-\u0002\u0000\u0007\u0000\u0002\u0001\u0007\u0001\u0002"+
+		"\u0002\u0007\u0002\u0002\u0003\u0007\u0003\u0001\u0000\u0001\u0000\u0004"+
+		"\u0000\u000b\b\u0000\u000b\u0000\f\u0000\f\u0001\u0000\u0001\u0000\u0001"+
 		"\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001"+
-		"\u0001\u0002\u0001\u0002\u0001\u0002\u0001\u0002\u0001\u0002\u0001\u0003"+
-		"\u0001\u0003\u0001\u0003\u0003\u0003 \b\u0003\u0001\u0003\u0001\u0003"+
-		"\u0001\u0003\u0001\u0003\u0001\u0003\u0001\u0003\u0005\u0003(\b\u0003"+
-		"\n\u0003\f\u0003+\t\u0003\u0001\u0003\u0000\u0001\u0006\u0004\u0000\u0002"+
-		"\u0004\u0006\u0000\u0000.\u0000\u000b\u0001\u0000\u0000\u0000\u0002\u0011"+
-		"\u0001\u0000\u0000\u0000\u0004\u0017\u0001\u0000\u0000\u0000\u0006\u001f"+
-		"\u0001\u0000\u0000\u0000\b\f\u0003\u0002\u0001\u0000\t\f\u0003\u0006\u0003"+
-		"\u0000\n\f\u0003\u0004\u0002\u0000\u000b\b\u0001\u0000\u0000\u0000\u000b"+
-		"\t\u0001\u0000\u0000\u0000\u000b\n\u0001\u0000\u0000\u0000\f\r\u0001\u0000"+
-		"\u0000\u0000\r\u000b\u0001\u0000\u0000\u0000\r\u000e\u0001\u0000\u0000"+
-		"\u0000\u000e\u000f\u0001\u0000\u0000\u0000\u000f\u0010\u0005\u0000\u0000"+
-		"\u0001\u0010\u0001\u0001\u0000\u0000\u0000\u0011\u0012\u0005\u0005\u0000"+
-		"\u0000\u0012\u0013\u0005\u0001\u0000\u0000\u0013\u0014\u0005\t\u0000\u0000"+
-		"\u0014\u0015\u0005\u0002\u0000\u0000\u0015\u0016\u0005\u0006\u0000\u0000"+
-		"\u0016\u0003\u0001\u0000\u0000\u0000\u0017\u0018\u0005\u0005\u0000\u0000"+
-		"\u0018\u0019\u0005\u000b\u0000\u0000\u0019\u001a\u0003\u0006\u0003\u0000"+
-		"\u001a\u001b\u0005\f\u0000\u0000\u001b\u0005\u0001\u0000\u0000\u0000\u001c"+
-		"\u001d\u0006\u0003\uffff\uffff\u0000\u001d \u0005\u0005\u0000\u0000\u001e"+
-		" \u0005\u0006\u0000\u0000\u001f\u001c\u0001\u0000\u0000\u0000\u001f\u001e"+
-		"\u0001\u0000\u0000\u0000 )\u0001\u0000\u0000\u0000!\"\n\u0004\u0000\u0000"+
-		"\"#\u0005\u0003\u0000\u0000#(\u0003\u0006\u0003\u0005$%\n\u0003\u0000"+
-		"\u0000%&\u0005\u0004\u0000\u0000&(\u0003\u0006\u0003\u0004\'!\u0001\u0000"+
-		"\u0000\u0000\'$\u0001\u0000\u0000\u0000(+\u0001\u0000\u0000\u0000)\'\u0001"+
-		"\u0000\u0000\u0000)*\u0001\u0000\u0000\u0000*\u0007\u0001\u0000\u0000"+
-		"\u0000+)\u0001\u0000\u0000\u0000\u0005\u000b\r\u001f\')";
+		"\u0002\u0001\u0002\u0001\u0002\u0001\u0002\u0001\u0002\u0001\u0003\u0001"+
+		"\u0003\u0001\u0003\u0001\u0003\u0003\u0003 \b\u0003\u0001\u0003\u0001"+
+		"\u0003\u0001\u0003\u0001\u0003\u0001\u0003\u0001\u0003\u0005\u0003(\b"+
+		"\u0003\n\u0003\f\u0003+\t\u0003\u0001\u0003\u0000\u0001\u0006\u0004\u0000"+
+		"\u0002\u0004\u0006\u0000\u0001\u0001\u0000\t\n.\u0000\n\u0001\u0000\u0000"+
+		"\u0000\u0002\u0010\u0001\u0000\u0000\u0000\u0004\u0016\u0001\u0000\u0000"+
+		"\u0000\u0006\u001f\u0001\u0000\u0000\u0000\b\u000b\u0003\u0002\u0001\u0000"+
+		"\t\u000b\u0003\u0006\u0003\u0000\n\b\u0001\u0000\u0000\u0000\n\t\u0001"+
+		"\u0000\u0000\u0000\u000b\f\u0001\u0000\u0000\u0000\f\n\u0001\u0000\u0000"+
+		"\u0000\f\r\u0001\u0000\u0000\u0000\r\u000e\u0001\u0000\u0000\u0000\u000e"+
+		"\u000f\u0005\u0000\u0000\u0001\u000f\u0001\u0001\u0000\u0000\u0000\u0010"+
+		"\u0011\u0005\u0005\u0000\u0000\u0011\u0012\u0005\u0001\u0000\u0000\u0012"+
+		"\u0013\u0007\u0000\u0000\u0000\u0013\u0014\u0005\u0002\u0000\u0000\u0014"+
+		"\u0015\u0003\u0006\u0003\u0000\u0015\u0003\u0001\u0000\u0000\u0000\u0016"+
+		"\u0017\u0005\u0005\u0000\u0000\u0017\u0018\u0005\f\u0000\u0000\u0018\u0019"+
+		"\u0003\u0006\u0003\u0000\u0019\u001a\u0005\r\u0000\u0000\u001a\u0005\u0001"+
+		"\u0000\u0000\u0000\u001b\u001c\u0006\u0003\uffff\uffff\u0000\u001c \u0005"+
+		"\u0005\u0000\u0000\u001d \u0005\u0006\u0000\u0000\u001e \u0003\u0004\u0002"+
+		"\u0000\u001f\u001b\u0001\u0000\u0000\u0000\u001f\u001d\u0001\u0000\u0000"+
+		"\u0000\u001f\u001e\u0001\u0000\u0000\u0000 )\u0001\u0000\u0000\u0000!"+
+		"\"\n\u0005\u0000\u0000\"#\u0005\u0003\u0000\u0000#(\u0003\u0006\u0003"+
+		"\u0006$%\n\u0004\u0000\u0000%&\u0005\u0004\u0000\u0000&(\u0003\u0006\u0003"+
+		"\u0005\'!\u0001\u0000\u0000\u0000\'$\u0001\u0000\u0000\u0000(+\u0001\u0000"+
+		"\u0000\u0000)\'\u0001\u0000\u0000\u0000)*\u0001\u0000\u0000\u0000*\u0007"+
+		"\u0001\u0000\u0000\u0000+)\u0001\u0000\u0000\u0000\u0005\n\f\u001f\')";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

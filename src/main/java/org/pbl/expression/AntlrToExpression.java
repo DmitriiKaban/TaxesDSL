@@ -33,9 +33,10 @@ public class AntlrToExpression extends GrammarBaseVisitor<Expression> {
         }
 
         String type = ctx.getChild(2).getText();
-        int value = Integer.parseInt(ctx.NUM().getText());
 
-        return new VariableDeclaration(id, type, value);
+        Expression expressionValue = visit(ctx.getChild(4));
+
+        return new VariableDeclaration(id, type, expressionValue);
     }
 
     @Override
@@ -80,13 +81,21 @@ public class AntlrToExpression extends GrammarBaseVisitor<Expression> {
         return new Number(num);
     }
 
-
     @Override
-    public Expression visitFunctionCall(GrammarParser.FunctionCallContext ctx) {
+    public Expression visitMethodCall(GrammarParser.MethodCallContext ctx) {
 
         String id = ctx.ID().getText();
         Expression expression = visit(ctx.getChild(2));
 
+//        System.out.println("HI methodCall");
+//        System.out.println(expression.toString());
+
         return new FunctionCall(id, expression);
+    }
+
+    @Override
+    public Expression visitMethodExprCall(GrammarParser.MethodExprCallContext ctx) {
+
+        return visitMethodCall(ctx.methodCall());
     }
 }

@@ -12,24 +12,29 @@ COMMENT : '//' ~[\r\n]* -> skip; // ~ - negation, skip everything except \r or \
 WS : [ \r\t\n]+ -> skip; // skip whitespaces
 
 INT_TYPE : 'INTEGER';
+DOUBLE_TYPE : 'DOUBLE';
 COMMA    : ',' ;
 LPAREN   : '(' ;
 RPAREN   : ')' ;
+SEMI     : ';' ;
+FUNC     : 'function' ;
 
 // Star Variable
-prog: (decl | expr | methodCall)+ EOF        # Program
+prog: (decl | expr)+ EOF        # Program
     ;
 
-decl: ID ':' INT_TYPE '=' NUM   # Declaration
+decl: ID ':' (INT_TYPE | DOUBLE_TYPE) '=' expr   # Declaration
     ;
 
-methodCall: ID LPAREN expr RPAREN # FunctionCall
+methodCall: ID LPAREN expr RPAREN
     ;
 
 // * sooner than +, so that * can be evaluated first
-expr:
+expr: //(
     expr '*' expr                # Multiplication
     | expr '+' expr              # Addition
     | ID                         # Variable
     | NUM                        # Number
+    | methodCall                 # MethodExprCall
+    //) ';'
     ;

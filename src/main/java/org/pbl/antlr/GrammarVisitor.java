@@ -27,12 +27,18 @@ public interface GrammarVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitDeclaration(GrammarParser.DeclarationContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code FunctionCall}
-	 * labeled alternative in {@link GrammarParser#methodCall}.
+	 * Visit a parse tree produced by {@link GrammarParser#methodCall}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitFunctionCall(GrammarParser.FunctionCallContext ctx);
+	T visitMethodCall(GrammarParser.MethodCallContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code MethodExprCall}
+	 * labeled alternative in {@link GrammarParser#expr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMethodExprCall(GrammarParser.MethodExprCallContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code Multiplication}
 	 * labeled alternative in {@link GrammarParser#expr}.
