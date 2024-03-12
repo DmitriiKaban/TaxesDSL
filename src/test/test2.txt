@@ -1,5 +1,9 @@
-i : INTEGER = 5
+i : INTEGER = 5.0
 print(i)
 tva ( i )
 j : INTEGER = tva(i)
 print(j)
+if i > j
+{
+    print(i)
+}

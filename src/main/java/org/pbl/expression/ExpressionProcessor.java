@@ -24,18 +24,20 @@ public class ExpressionProcessor {
 
         for (Expression e : list) {
 
+            System.out.println(e.getClass());
+
             if (e instanceof VariableDeclaration) {
 
                 VariableDeclaration vd = (VariableDeclaration) e;
 
-                double value = getEvalResult(vd.value);
+                double value = getEvalResult(vd.value).asDouble();
                 values.put(vd.id, value);
             } else if (e instanceof FunctionCall) {
 
                 FunctionCall fc = (FunctionCall) e;
                 String id = fc.id;
                 Expression value = fc.value;
-                double extractedValue = getEvalResult(value);
+                double extractedValue = getEvalResult(value).asDouble();
 
                 switch (id) {
                     case "tva":
@@ -51,11 +53,38 @@ public class ExpressionProcessor {
                     default:
                         evaluations.add("Function " + id + " not found");
                 }
+            } else if (e instanceof IfStatement) {
+
+
+                System.out.println("RelationalExpression: " + e);
+
+                switch (((IfStatement) e).condition.relationalExpression.operator) {
+                    case LESS_THAN:
+                        if (getEvalResult(((RelationalExpression) e).leftExpr).asDouble() < getEvalResult(((RelationalExpression) e).rightExpr).asDouble()) {
+
+//                            Expression expression = ((RelationalExpression) e).;
+                        }
+                        break;
+                    case LESS_THAN_OR_EQUAL:
+//                        return new Value(getEvalResult(((RelationalExpression) e).leftExpr).asDouble() <= getEvalResult(((RelationalExpression) e).rightExpr).asDouble());
+                    case GREATER_THAN:
+//                        return new Value(getEvalResult(((RelationalExpression) e).leftExpr).asDouble() > getEvalResult(((RelationalExpression) e).rightExpr).asDouble());
+
+                        if (getEvalResult(((RelationalExpression) e).leftExpr).asDouble() > getEvalResult(((RelationalExpression) e).rightExpr).asDouble()) {
+                                evaluations.add("<");
+//                            System.out.println("HI");
+                        }
+                    case GREATER_THAN_OR_EQUAL:
+//                        return new Value(getEvalResult(((RelationalExpression) e).leftExpr).asDouble() >= getEvalResult(((RelationalExpression) e).rightExpr).asDouble());
+                    default:
+                        throw new RuntimeException("unknown operator: " + ((RelationalExpression) e).operator);
+                }
+
             } else { // Number or Variable or Addition or Multiplication
 //                String input = e.toString();
                 String input = (e != null) ? e.toString() : "null";
 
-                double result = getEvalResult(e);
+                double result = getEvalResult(e).asDouble();
                 evaluations.add(input + " is " + result);
             }
         }
@@ -63,43 +92,43 @@ public class ExpressionProcessor {
         return evaluations;
     }
 
-    private double getEvalResult(Expression e) {
-
-        double result = 0;
+    private Value getEvalResult(Expression e) {
 
         if (e instanceof Number) {
             Number n = (Number) e;
-            result = n.num;
+            return new Value(n.num);
         } else if (e instanceof Variable) {
             Variable v = (Variable) e;
-            result = values.get(v.id); // variable value from symbol table
+            return new Value(values.get(v.id)); // variable value from symbol table
         } else if (e instanceof Addition) {
             Addition a = (Addition) e;
-            result = getEvalResult(a.left) + getEvalResult(a.right);
+            return new Value(getEvalResult(a.left).asDouble() + getEvalResult(a.right).asDouble());
         } else if (e instanceof Multiplication) {
             Multiplication m = (Multiplication) e;
-            result = getEvalResult(m.left) * getEvalResult(m.right);
+            return new Value(getEvalResult(m.left).asDouble() * getEvalResult(m.right).asDouble());
         } else if (e instanceof FunctionCall) {
             FunctionCall fc = (FunctionCall) e;
             String id = fc.id;
             Expression value = fc.value;
-            double extractedValue = getEvalResult(value);
+            double extractedValue = getEvalResult(value).asDouble();
 
             switch (id) {
                 case "tva":
-                    result = extractedValue * 0.2;
-                    break;
+                    return new Value(extractedValue * 0.2);
                 case "print":
                     System.out.println(extractedValue);
                     break;
                 case "impozitulPeVenit":
-                    result = extractedValue * 0.12;
-                    break;
+                    return new Value(extractedValue * 0.12);
                 default:
-                    System.out.println("Function " + id + " not found");
+                    throw new RuntimeException("Function " + id + " not found");
             }
+        } else if (e instanceof EqualityExpression) {
+
+            return new Value(!(getEvalResult(((EqualityExpression) e).leftExpr).asDouble() - getEvalResult(((EqualityExpression) e).rightExpr).asDouble() > 0.0000001));
+        } else if (e instanceof RelationalExpression) {
         }
 
-        return result;
+        return new Value(-777.0); // dummy value
     }
 }

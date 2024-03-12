@@ -33,6 +33,25 @@ public interface GrammarVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitMethodCall(GrammarParser.MethodCallContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code IfConditionStatement}
+	 * labeled alternative in {@link GrammarParser#ifStatement}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitIfConditionStatement(GrammarParser.IfConditionStatementContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link GrammarParser#conditionBlock}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitConditionBlock(GrammarParser.ConditionBlockContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link GrammarParser#stateBlock}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitStateBlock(GrammarParser.StateBlockContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code MethodExprCall}
 	 * labeled alternative in {@link GrammarParser#expr}.
 	 * @param ctx the parse tree
@@ -61,10 +80,31 @@ public interface GrammarVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitVariable(GrammarParser.VariableContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code EqualityExpr}
+	 * labeled alternative in {@link GrammarParser#expr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitEqualityExpr(GrammarParser.EqualityExprContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code Number}
 	 * labeled alternative in {@link GrammarParser#expr}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitNumber(GrammarParser.NumberContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code RelationalExpr}
+	 * labeled alternative in {@link GrammarParser#expr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitRelationalExpr(GrammarParser.RelationalExprContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code BooleanExpr}
+	 * labeled alternative in {@link GrammarParser#expr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBooleanExpr(GrammarParser.BooleanExprContext ctx);
 }

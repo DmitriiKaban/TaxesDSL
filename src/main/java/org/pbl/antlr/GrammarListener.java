@@ -44,6 +44,38 @@ public interface GrammarListener extends ParseTreeListener {
 	 */
 	void exitMethodCall(GrammarParser.MethodCallContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code IfConditionStatement}
+	 * labeled alternative in {@link GrammarParser#ifStatement}.
+	 * @param ctx the parse tree
+	 */
+	void enterIfConditionStatement(GrammarParser.IfConditionStatementContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code IfConditionStatement}
+	 * labeled alternative in {@link GrammarParser#ifStatement}.
+	 * @param ctx the parse tree
+	 */
+	void exitIfConditionStatement(GrammarParser.IfConditionStatementContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link GrammarParser#conditionBlock}.
+	 * @param ctx the parse tree
+	 */
+	void enterConditionBlock(GrammarParser.ConditionBlockContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link GrammarParser#conditionBlock}.
+	 * @param ctx the parse tree
+	 */
+	void exitConditionBlock(GrammarParser.ConditionBlockContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link GrammarParser#stateBlock}.
+	 * @param ctx the parse tree
+	 */
+	void enterStateBlock(GrammarParser.StateBlockContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link GrammarParser#stateBlock}.
+	 * @param ctx the parse tree
+	 */
+	void exitStateBlock(GrammarParser.StateBlockContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code MethodExprCall}
 	 * labeled alternative in {@link GrammarParser#expr}.
 	 * @param ctx the parse tree
@@ -92,6 +124,18 @@ public interface GrammarListener extends ParseTreeListener {
 	 */
 	void exitVariable(GrammarParser.VariableContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code EqualityExpr}
+	 * labeled alternative in {@link GrammarParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void enterEqualityExpr(GrammarParser.EqualityExprContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code EqualityExpr}
+	 * labeled alternative in {@link GrammarParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void exitEqualityExpr(GrammarParser.EqualityExprContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code Number}
 	 * labeled alternative in {@link GrammarParser#expr}.
 	 * @param ctx the parse tree
@@ -103,4 +147,28 @@ public interface GrammarListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitNumber(GrammarParser.NumberContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code RelationalExpr}
+	 * labeled alternative in {@link GrammarParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void enterRelationalExpr(GrammarParser.RelationalExprContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code RelationalExpr}
+	 * labeled alternative in {@link GrammarParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void exitRelationalExpr(GrammarParser.RelationalExprContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code BooleanExpr}
+	 * labeled alternative in {@link GrammarParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void enterBooleanExpr(GrammarParser.BooleanExprContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code BooleanExpr}
+	 * labeled alternative in {@link GrammarParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void exitBooleanExpr(GrammarParser.BooleanExprContext ctx);
 }
