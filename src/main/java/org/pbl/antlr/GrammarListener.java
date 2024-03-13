@@ -44,6 +44,18 @@ public interface GrammarListener extends ParseTreeListener {
 	 */
 	void exitMethodCall(GrammarParser.MethodCallContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code IfExpression}
+	 * labeled alternative in {@link GrammarParser#ifExpr}.
+	 * @param ctx the parse tree
+	 */
+	void enterIfExpression(GrammarParser.IfExpressionContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code IfExpression}
+	 * labeled alternative in {@link GrammarParser#ifExpr}.
+	 * @param ctx the parse tree
+	 */
+	void exitIfExpression(GrammarParser.IfExpressionContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code MethodExprCall}
 	 * labeled alternative in {@link GrammarParser#expr}.
 	 * @param ctx the parse tree
@@ -92,6 +104,18 @@ public interface GrammarListener extends ParseTreeListener {
 	 */
 	void exitVariable(GrammarParser.VariableContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code Subtraction}
+	 * labeled alternative in {@link GrammarParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void enterSubtraction(GrammarParser.SubtractionContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code Subtraction}
+	 * labeled alternative in {@link GrammarParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void exitSubtraction(GrammarParser.SubtractionContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code Number}
 	 * labeled alternative in {@link GrammarParser#expr}.
 	 * @param ctx the parse tree
@@ -103,4 +127,64 @@ public interface GrammarListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitNumber(GrammarParser.NumberContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code Division}
+	 * labeled alternative in {@link GrammarParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void enterDivision(GrammarParser.DivisionContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code Division}
+	 * labeled alternative in {@link GrammarParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void exitDivision(GrammarParser.DivisionContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code IfExprStatement}
+	 * labeled alternative in {@link GrammarParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void enterIfExprStatement(GrammarParser.IfExprStatementContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code IfExprStatement}
+	 * labeled alternative in {@link GrammarParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void exitIfExprStatement(GrammarParser.IfExprStatementContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code Boolean}
+	 * labeled alternative in {@link GrammarParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void enterBoolean(GrammarParser.BooleanContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code Boolean}
+	 * labeled alternative in {@link GrammarParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void exitBoolean(GrammarParser.BooleanContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code RelationalComparison}
+	 * labeled alternative in {@link GrammarParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void enterRelationalComparison(GrammarParser.RelationalComparisonContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code RelationalComparison}
+	 * labeled alternative in {@link GrammarParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void exitRelationalComparison(GrammarParser.RelationalComparisonContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code EqualityComparison}
+	 * labeled alternative in {@link GrammarParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void enterEqualityComparison(GrammarParser.EqualityComparisonContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code EqualityComparison}
+	 * labeled alternative in {@link GrammarParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void exitEqualityComparison(GrammarParser.EqualityComparisonContext ctx);
 }

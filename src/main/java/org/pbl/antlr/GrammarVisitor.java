@@ -33,6 +33,13 @@ public interface GrammarVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitMethodCall(GrammarParser.MethodCallContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code IfExpression}
+	 * labeled alternative in {@link GrammarParser#ifExpr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitIfExpression(GrammarParser.IfExpressionContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code MethodExprCall}
 	 * labeled alternative in {@link GrammarParser#expr}.
 	 * @param ctx the parse tree
@@ -61,10 +68,52 @@ public interface GrammarVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitVariable(GrammarParser.VariableContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code Subtraction}
+	 * labeled alternative in {@link GrammarParser#expr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitSubtraction(GrammarParser.SubtractionContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code Number}
 	 * labeled alternative in {@link GrammarParser#expr}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitNumber(GrammarParser.NumberContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code Division}
+	 * labeled alternative in {@link GrammarParser#expr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitDivision(GrammarParser.DivisionContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code IfExprStatement}
+	 * labeled alternative in {@link GrammarParser#expr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitIfExprStatement(GrammarParser.IfExprStatementContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code Boolean}
+	 * labeled alternative in {@link GrammarParser#expr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBoolean(GrammarParser.BooleanContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code RelationalComparison}
+	 * labeled alternative in {@link GrammarParser#expr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitRelationalComparison(GrammarParser.RelationalComparisonContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code EqualityComparison}
+	 * labeled alternative in {@link GrammarParser#expr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitEqualityComparison(GrammarParser.EqualityComparisonContext ctx);
 }

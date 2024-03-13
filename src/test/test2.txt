@@ -3,3 +3,8 @@ print(i)
 tva ( i )
 j : INTEGER = tva(i)
 print(j)
+
+if i >= j then
+    print("hello")
+else
+    print(6)

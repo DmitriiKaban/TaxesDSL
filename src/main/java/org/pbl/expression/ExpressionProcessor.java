@@ -1,7 +1,5 @@
 package org.pbl.expression;
 
-import org.pbl.antlr.GrammarParser;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -40,10 +38,9 @@ public class ExpressionProcessor {
                 switch (id) {
                     case "tva":
                         evaluations.add("Value " + extractedValue + " has TVA: " + (extractedValue * 0.2));
-//                        System.out.println("Value " + extractedValue + " has TVA: " + (extractedValue * 0.2));
                         break;
                     case "print":
-                        evaluations.add(String.valueOf(extractedValue));
+                        evaluations.add(value.toString() + " = " + extractedValue);
                         break;
                     case "impozitulPeVenit":
                         evaluations.add("Impozitul pe venit: " + (extractedValue * 0.12) + ", remaining sum: " + (extractedValue * 0.88));
@@ -51,8 +48,12 @@ public class ExpressionProcessor {
                     default:
                         evaluations.add("Function " + id + " not found");
                 }
-            } else { // Number or Variable or Addition or Multiplication
-//                String input = e.toString();
+            } else if (e instanceof IfExpression) {
+
+                IfExpression ie = (IfExpression) e;
+                evaluations.add(getEvalResult(ie) + "");
+
+            } else { // Number or Variable or Addition or Multiplication or Division or Subtraction
                 String input = (e != null) ? e.toString() : "null";
 
                 double result = getEvalResult(e);
@@ -67,6 +68,7 @@ public class ExpressionProcessor {
 
         double result = 0;
 
+
         if (e instanceof Number) {
             Number n = (Number) e;
             result = n.num;
@@ -79,6 +81,12 @@ public class ExpressionProcessor {
         } else if (e instanceof Multiplication) {
             Multiplication m = (Multiplication) e;
             result = getEvalResult(m.left) * getEvalResult(m.right);
+        } else if (e instanceof Division) {
+            Division d = (Division) e;
+            result = getEvalResult(d.left) / getEvalResult(d.right);
+        } else if (e instanceof Subtraction) {
+            Subtraction s = (Subtraction) e;
+            result = getEvalResult(s.left) - getEvalResult(s.right);
         } else if (e instanceof FunctionCall) {
             FunctionCall fc = (FunctionCall) e;
             String id = fc.id;
@@ -90,13 +98,75 @@ public class ExpressionProcessor {
                     result = extractedValue * 0.2;
                     break;
                 case "print":
-                    System.out.println(extractedValue);
+                    result = extractedValue;
                     break;
                 case "impozitulPeVenit":
                     result = extractedValue * 0.12;
                     break;
                 default:
                     System.out.println("Function " + id + " not found");
+            }
+        } else if (e instanceof Boolean) {
+            Boolean b = (Boolean) e;
+            result = b.bool ? 1 : 0;
+
+        } else if (e instanceof IfExpression) {
+
+            IfExpression ie = (IfExpression) e;
+            Expression condition = ie.getCondition();
+            Expression thenBranch = ie.getThenBranch();
+            Expression elseBranch = ie.getElseBranch();
+
+            double conditionResult = getEvalResult(condition);
+
+            if (conditionResult == 1) {
+                result = getEvalResult(thenBranch);
+            } else {
+                if (elseBranch != null) {
+                    result = getEvalResult(elseBranch);
+                }
+            }
+        } else if (e instanceof EqualityComparison) {
+
+            EqualityComparison ec = (EqualityComparison) e;
+            Expression left = ec.left;
+            Expression right = ec.right;
+            Equality equality = ec.equality;
+
+            double leftResult = getEvalResult(left);
+            double rightResult = getEvalResult(right);
+
+            switch (equality) {
+                case EQUALS:
+                    result = leftResult == rightResult ? 1 : 0;
+                    break;
+                case NOT_EQUALS:
+                    result = leftResult != rightResult ? 1 : 0;
+                    break;
+            }
+        } else if (e instanceof RelationalComparison) {
+
+            RelationalComparison rc = (RelationalComparison) e;
+            Expression left = rc.left;
+            Expression right = rc.right;
+            Relational relational = rc.relational;
+
+            double leftResult = getEvalResult(left);
+            double rightResult = getEvalResult(right);
+
+            switch (relational) {
+                case LESS_THAN:
+                    result = leftResult < rightResult ? 1 : 0;
+                    break;
+                case GREATER_THAN:
+                    result = leftResult > rightResult ? 1 : 0;
+                    break;
+                case LESS_THAN_OR_EQUAL:
+                    result = leftResult <= rightResult ? 1 : 0;
+                    break;
+                case GREATER_THAN_OR_EQUAL:
+                    result = leftResult >= rightResult ? 1 : 0;
+                    break;
             }
         }
 

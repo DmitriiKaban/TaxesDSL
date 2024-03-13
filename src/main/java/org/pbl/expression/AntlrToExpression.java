@@ -58,6 +58,24 @@ public class AntlrToExpression extends GrammarBaseVisitor<Expression> {
     }
 
     @Override
+    public Expression visitSubtraction(GrammarParser.SubtractionContext ctx) {
+
+        Expression left = visit(ctx.getChild(0));
+        Expression right = visit(ctx.getChild(2));
+
+        return new Subtraction(left, right);
+    }
+
+    @Override
+    public Expression visitDivision(GrammarParser.DivisionContext ctx) {
+
+        Expression left = visit(ctx.getChild(0));
+        Expression right = visit(ctx.getChild(2));
+
+        return new Division(left, right);
+    }
+
+    @Override
     public Expression visitVariable(GrammarParser.VariableContext ctx) {
 
         Token idToken = ctx.ID().getSymbol();
@@ -84,11 +102,14 @@ public class AntlrToExpression extends GrammarBaseVisitor<Expression> {
     @Override
     public Expression visitMethodCall(GrammarParser.MethodCallContext ctx) {
 
-        String id = ctx.ID().getText();
+        String id = "";
+        if (ctx.PRINT() != null) {
+            id = ctx.PRINT().getText();
+        }
+        else if (ctx.TVA() != null) {
+            id = ctx.TVA().getText();
+        }
         Expression expression = visit(ctx.getChild(2));
-
-//        System.out.println("HI methodCall");
-//        System.out.println(expression.toString());
 
         return new FunctionCall(id, expression);
     }
@@ -98,4 +119,65 @@ public class AntlrToExpression extends GrammarBaseVisitor<Expression> {
 
         return visitMethodCall(ctx.methodCall());
     }
+
+    @Override
+    public Expression visitIfExpression(GrammarParser.IfExpressionContext ctx) {
+        Expression condition = visit(ctx.expr(0)); // The condition expression
+        Expression thenBranch = visit(ctx.expr(1)); // The 'then' branch expression
+
+        Expression elseBranch = null;
+        if (ctx.expr(2) != null) { // Check if there's an 'else' branch
+            elseBranch = visit(ctx.expr(2));
+        }
+
+        return new IfExpression(condition, thenBranch, elseBranch);
+    }
+
+    @Override
+    public Expression visitIfExprStatement(GrammarParser.IfExprStatementContext ctx) {
+
+        return new IfExpression(visit(ctx.ifExpr().getChild(1)), visit(ctx.ifExpr().getChild(3)), visit(ctx.ifExpr().getChild(5)));
+    }
+
+    @Override
+    public Expression visitBoolean(GrammarParser.BooleanContext ctx) {
+        String boolText = ctx.getText(); // Get the boolean literal text
+        boolean boolValue = java.lang.Boolean.parseBoolean(boolText); // Parse the boolean value
+        return new Boolean(boolValue); // Create and return a Boolean expression object
+    }
+
+    @Override
+    public Expression visitRelationalComparison(GrammarParser.RelationalComparisonContext ctx) {
+        Expression left = visit(ctx.expr(0));
+        Expression right = visit(ctx.expr(1));
+
+        switch (ctx.RELATIONALOP().toString()) {
+            case "<":
+                return new RelationalComparison(left, Relational.LESS_THAN, right);
+            case ">":
+                return new RelationalComparison(left, Relational.GREATER_THAN, right);
+            case "<=":
+                return new RelationalComparison(left, Relational.LESS_THAN_OR_EQUAL, right);
+            case ">=":
+                return new RelationalComparison(left, Relational.GREATER_THAN_OR_EQUAL, right);
+            default:
+                return null;
+        }
+    }
+
+    @Override
+    public Expression visitEqualityComparison(GrammarParser.EqualityComparisonContext ctx) {
+        Expression left = visit(ctx.expr(0));
+        Expression right = visit(ctx.expr(1));
+
+        switch (ctx.EQULITYOP().toString()) {
+            case "==":
+                return new EqualityComparison(left, Equality.EQUALS, right);
+            case "!=":
+                return new EqualityComparison(left, Equality.NOT_EQUALS, right);
+            default:
+                return null;
+        }
+    }
+
 }
