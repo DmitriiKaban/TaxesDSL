@@ -89,6 +89,13 @@ public interface GrammarVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitDivision(GrammarParser.DivisionContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code String}
+	 * labeled alternative in {@link GrammarParser#expr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitString(GrammarParser.StringContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code IfExprStatement}
 	 * labeled alternative in {@link GrammarParser#expr}.
 	 * @param ctx the parse tree

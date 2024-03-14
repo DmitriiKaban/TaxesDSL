@@ -21,15 +21,16 @@ ifExpr:
 
 // * sooner than +, so that * can be evaluated first
 expr:
-    methodCall                 # MethodExprCall
+    methodCall                   # MethodExprCall
     | ifExpr                     # IfExprStatement
-    | expr '*' expr                # Multiplication
-    | expr '/' expr                # Division
+    | expr EQULITYOP expr        # EqualityComparison
+    | expr RELATIONALOP expr     # RelationalComparison
+    | expr '*' expr              # Multiplication
+    | expr '/' expr              # Division
     | expr '+' expr              # Addition
     | expr '-' expr              # Subtraction
-    | expr EQULITYOP expr             # EqualityComparison
-    | expr RELATIONALOP expr              # RelationalComparison
     | BOOL                       # Boolean
+    | STRING                     # String
     | ID                         # Variable
     | NUM                        # Number
     ;
@@ -40,6 +41,8 @@ DOUBLE_TYPE : 'DOUBLE';
 BOOL : 'TRUE' | 'FALSE';
 RELATIONALOP : (GT | LT | GTE | LTE);
 EQULITYOP : (EQ | NEQ);
+
+STRING : '"' (~["])* '"';
 
 COMMA    : ',' ;
 LPAREN   : '(' ;
@@ -52,12 +55,12 @@ LT       : '<' ;
 GTE      : '>=' ;
 LTE      : '<=' ;
 
-IF : 'if';
+IF   : 'if';
 ELSE : 'else';
 THEN : 'then';
 
-PRINT : 'print';
-TVA : 'tva';
+PRINT    : 'print';
+TVA      : 'tva';
 FUNC     : 'function' ;
 
 ID : [a-z][a-zA-Z0-9_]*;

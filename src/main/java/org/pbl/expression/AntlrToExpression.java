@@ -143,7 +143,13 @@ public class AntlrToExpression extends GrammarBaseVisitor<Expression> {
     public Expression visitBoolean(GrammarParser.BooleanContext ctx) {
         String boolText = ctx.getText(); // Get the boolean literal text
         boolean boolValue = java.lang.Boolean.parseBoolean(boolText); // Parse the boolean value
-        return new Boolean(boolValue); // Create and return a Boolean expression object
+        return new BooleanExpression(boolValue); // Create and return a Boolean expression object
+    }
+
+    @Override
+    public Expression visitString(GrammarParser.StringContext ctx) {
+        String str = ctx.getText().substring(1, ctx.getText().length() - 1); // to remove " from the beginning and end of the string
+        return new StringExpression(str);
     }
 
     @Override
