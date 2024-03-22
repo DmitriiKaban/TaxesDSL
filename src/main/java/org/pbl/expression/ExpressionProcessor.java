@@ -1,9 +1,13 @@
 package org.pbl.expression;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static java.lang.Math.round;
 
 public class ExpressionProcessor {
 
@@ -27,11 +31,6 @@ public class ExpressionProcessor {
                 VariableDeclaration vd = (VariableDeclaration) e;
 
                 Object value = getEvalResult(vd.value);
-//                System.out.println("===");
-//                System.out.println(vd.type);
-//                System.out.println(vd.id);
-//                System.out.println(vd.value + " " + value + " " + vd.value.getClass());
-//                System.out.println("===");
                 values.put(vd.id, value);
             } else if (e instanceof FunctionCall) {
 
@@ -45,7 +44,13 @@ public class ExpressionProcessor {
                         evaluations.add("Value " + extractedValue + " has TVA: " + (Double.parseDouble(extractedValue + "") * 0.2));
                         break;
                     case "print":
-                        evaluations.add(value.toString() + " = " + extractedValue);
+                        if (extractedValue instanceof String) {
+                            evaluations.add(extractedValue + "");
+                        } else if (value instanceof Variable) {
+                            evaluations.add(value + " = " + extractedValue);
+                        } else if (extractedValue instanceof Double || extractedValue instanceof Integer) {
+                            evaluations.add(extractedValue + "");
+                        }
                         break;
                     case "impozitulPeVenit":
                         evaluations.add("Impozitul pe venit: " + (Double.parseDouble(extractedValue + "") * 0.12) + ", remaining sum: " + (Double.parseDouble(extractedValue + "") * 0.88));
@@ -81,8 +86,25 @@ public class ExpressionProcessor {
             Object left = getEvalResult(a.left);
             Object right = getEvalResult(a.right);
             if (left instanceof Double && right instanceof Double) {
-                return (Double) left + (Double) right;
+                double result = (Double) left + (Double) right;
+                return round(result, 4);
+            } else if (left instanceof Integer && right instanceof Double) {
+                double result = (Integer) left + (Double) right;
+                return round(result, 4);
+            } else if (left instanceof Double && right instanceof Integer) {
+                double result = (Double) left + (Integer) right;
+                return round(result, 4);
+            } else if (left instanceof Integer && right instanceof Integer) {
+                double result = (Integer) left + (Integer) right;
+                return round(result, 4);
+            } else if (left instanceof String) {
+                return (String) left + right;
+            } else if (right instanceof String) {
+                return left + (String) right;
+            } else {
+                throw new IllegalArgumentException("Invalid operation: cannot add non-numeric values");
             }
+
         } else if (e instanceof Subtraction) {
             Subtraction s = (Subtraction) e;
             Object left = getEvalResult(s.left);
@@ -97,7 +119,17 @@ public class ExpressionProcessor {
             Object left = getEvalResult(m.left);
             Object right = getEvalResult(m.right);
             if (left instanceof Double && right instanceof Double) {
-                return (Double) left * (Double) right;
+                double result = (Double) left * (Double) right;
+                return round(result, 4);
+            } else if (left instanceof Integer && right instanceof Double) {
+                double result = (Integer) left * (Double) right;
+                return round(result, 4);
+            } else if (left instanceof Double && right instanceof Integer) {
+                double result = (Double) left * (Integer) right;
+                return round(result, 4);
+            } else if (left instanceof Integer && right instanceof Integer) {
+                double result = (Integer) left * (Integer) right;
+                return round(result, 4);
             } else {
                 throw new IllegalArgumentException("Invalid operation: cannot multiply non-numeric values");
             }
@@ -156,11 +188,13 @@ public class ExpressionProcessor {
 
             switch (id) {
                 case "tva":
-                    return Double.parseDouble(extractedValue + "") * 0.2;
+                    double tvaResult = Double.parseDouble(extractedValue + "") * 0.2;
+                    return round(tvaResult, 2);
                 case "print":
                     return extractedValue;
                 case "impozitulPeVenit":
-                    return Double.parseDouble(extractedValue + "") * 0.12;
+                    double impozitulResult = Double.parseDouble(extractedValue + "") * 0.12;
+                    return round(impozitulResult, 2);
             }
             return getEvalResult(value);
         } else if (e instanceof IfExpression) {
@@ -186,5 +220,12 @@ public class ExpressionProcessor {
         return null;
     }
 
+    private double round(double value, int places) {
+        if (places < 0) throw new IllegalArgumentException();
+
+        BigDecimal bd = BigDecimal.valueOf(value);
+        bd = bd.setScale(places, RoundingMode.HALF_UP);
+        return bd.doubleValue();
+    }
 
 }

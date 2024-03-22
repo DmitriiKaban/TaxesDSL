@@ -12,13 +12,6 @@ prog: (decl | expr)+ EOF        # Program
 decl: ID ':' (INT_TYPE | DOUBLE_TYPE) '=' expr   # Declaration
     ;
 
-methodCall: (PRINT | TVA) LPAREN expr RPAREN
-    ;
-
-ifExpr:
-    IF expr THEN expr (ELSE expr)? # IfExpression
-    ;
-
 // * sooner than +, so that * can be evaluated first
 expr:
     methodCall                   # MethodExprCall
@@ -33,6 +26,13 @@ expr:
     | STRING                     # String
     | ID                         # Variable
     | NUM                        # Number
+    ;
+
+methodCall: (PRINT | TVA) LPAREN expr RPAREN
+    ;
+
+ifExpr:
+    IF expr THEN expr (ELSE expr)? # IfExpression
     ;
 
 // TOKENS

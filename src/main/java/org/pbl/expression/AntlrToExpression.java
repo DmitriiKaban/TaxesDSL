@@ -141,9 +141,9 @@ public class AntlrToExpression extends GrammarBaseVisitor<Expression> {
 
     @Override
     public Expression visitBoolean(GrammarParser.BooleanContext ctx) {
-        String boolText = ctx.getText(); // Get the boolean literal text
-        boolean boolValue = java.lang.Boolean.parseBoolean(boolText); // Parse the boolean value
-        return new BooleanExpression(boolValue); // Create and return a Boolean expression object
+        String boolText = ctx.getText(); 
+        boolean boolValue = java.lang.Boolean.parseBoolean(boolText);
+        return new BooleanExpression(boolValue);
     }
 
     @Override
