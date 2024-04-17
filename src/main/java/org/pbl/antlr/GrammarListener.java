@@ -34,27 +34,17 @@ public interface GrammarListener extends ParseTreeListener {
 	 */
 	void exitDeclaration(GrammarParser.DeclarationContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link GrammarParser#methodCall}.
+	 * Enter a parse tree produced by the {@code UserModeInstantiation}
+	 * labeled alternative in {@link GrammarParser#userMode}.
 	 * @param ctx the parse tree
 	 */
-	void enterMethodCall(GrammarParser.MethodCallContext ctx);
+	void enterUserModeInstantiation(GrammarParser.UserModeInstantiationContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link GrammarParser#methodCall}.
+	 * Exit a parse tree produced by the {@code UserModeInstantiation}
+	 * labeled alternative in {@link GrammarParser#userMode}.
 	 * @param ctx the parse tree
 	 */
-	void exitMethodCall(GrammarParser.MethodCallContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code IfExpression}
-	 * labeled alternative in {@link GrammarParser#ifExpr}.
-	 * @param ctx the parse tree
-	 */
-	void enterIfExpression(GrammarParser.IfExpressionContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code IfExpression}
-	 * labeled alternative in {@link GrammarParser#ifExpr}.
-	 * @param ctx the parse tree
-	 */
-	void exitIfExpression(GrammarParser.IfExpressionContext ctx);
+	void exitUserModeInstantiation(GrammarParser.UserModeInstantiationContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code MethodExprCall}
 	 * labeled alternative in {@link GrammarParser#expr}.
@@ -199,4 +189,26 @@ public interface GrammarListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitEqualityComparison(GrammarParser.EqualityComparisonContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link GrammarParser#methodCall}.
+	 * @param ctx the parse tree
+	 */
+	void enterMethodCall(GrammarParser.MethodCallContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link GrammarParser#methodCall}.
+	 * @param ctx the parse tree
+	 */
+	void exitMethodCall(GrammarParser.MethodCallContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code IfExpression}
+	 * labeled alternative in {@link GrammarParser#ifExpr}.
+	 * @param ctx the parse tree
+	 */
+	void enterIfExpression(GrammarParser.IfExpressionContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code IfExpression}
+	 * labeled alternative in {@link GrammarParser#ifExpr}.
+	 * @param ctx the parse tree
+	 */
+	void exitIfExpression(GrammarParser.IfExpressionContext ctx);
 }

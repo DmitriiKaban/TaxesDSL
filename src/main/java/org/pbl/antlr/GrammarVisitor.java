@@ -27,18 +27,12 @@ public interface GrammarVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitDeclaration(GrammarParser.DeclarationContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link GrammarParser#methodCall}.
+	 * Visit a parse tree produced by the {@code UserModeInstantiation}
+	 * labeled alternative in {@link GrammarParser#userMode}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitMethodCall(GrammarParser.MethodCallContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code IfExpression}
-	 * labeled alternative in {@link GrammarParser#ifExpr}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitIfExpression(GrammarParser.IfExpressionContext ctx);
+	T visitUserModeInstantiation(GrammarParser.UserModeInstantiationContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code MethodExprCall}
 	 * labeled alternative in {@link GrammarParser#expr}.
@@ -123,4 +117,17 @@ public interface GrammarVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitEqualityComparison(GrammarParser.EqualityComparisonContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link GrammarParser#methodCall}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMethodCall(GrammarParser.MethodCallContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code IfExpression}
+	 * labeled alternative in {@link GrammarParser#ifExpr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitIfExpression(GrammarParser.IfExpressionContext ctx);
 }

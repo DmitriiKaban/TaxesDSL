@@ -6,10 +6,13 @@ grammar Grammar;
 }
 
 // Start Variable
-prog: (decl | expr)+ EOF        # Program
+prog: (decl | expr | userMode)+ EOF        # Program
     ;
 
 decl: ID ':' (INT_TYPE | DOUBLE_TYPE) '=' expr   # Declaration
+    ;
+
+userMode: USERMODE ':' ID # UserModeInstantiation
     ;
 
 // * sooner than +, so that * can be evaluated first
@@ -62,6 +65,7 @@ THEN : 'then';
 PRINT    : 'print';
 TVA      : 'tva';
 FUNC     : 'function' ;
+USERMODE : 'usermode' ;
 
 ID : [a-z][a-zA-Z0-9_]*;
 NUM : [0-9]+ ('.' [0-9]+)? ;

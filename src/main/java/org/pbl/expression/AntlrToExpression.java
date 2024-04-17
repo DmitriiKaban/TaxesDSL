@@ -12,10 +12,19 @@ public class AntlrToExpression extends GrammarBaseVisitor<Expression> {
 
     private List<String> vars; // List of variables declared in the program
     private List<String> semanticErrors; // 1. duplicate declaration 2. undeclared variable
+    public static UserMode userMode = UserMode.PHYSIC;
 
     public AntlrToExpression(List<String> semanticErrors) {
         this.vars = new ArrayList<>();
         this.semanticErrors = semanticErrors;
+    }
+
+    @Override
+    public Expression visitUserModeInstantiation(GrammarParser.UserModeInstantiationContext ctx) {
+
+        userMode = UserMode.valueOf(ctx.ID().getText().toUpperCase());
+
+        return null;
     }
 
     @Override
@@ -184,6 +193,10 @@ public class AntlrToExpression extends GrammarBaseVisitor<Expression> {
             default:
                 return null;
         }
+    }
+
+    public static UserMode getUserMode() {
+        return userMode;
     }
 
 }

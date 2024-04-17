@@ -1,3 +1,8 @@
+usermode: juridic
+
 i: INTEGER = 5
-i: INTEGER = 7
+
+j : INTEGER = tva(i)
+
+print(j)
 

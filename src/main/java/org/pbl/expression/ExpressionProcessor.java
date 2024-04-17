@@ -53,7 +53,10 @@ public class ExpressionProcessor {
                         }
                         break;
                     case "impozitulPeVenit":
-                        evaluations.add("Impozitul pe venit: " + (Double.parseDouble(extractedValue + "") * 0.12) + ", remaining sum: " + (Double.parseDouble(extractedValue + "") * 0.88));
+                        if (AntlrToExpression.getUserMode() == UserMode.PHYSIC)
+                            evaluations.add("Impozitul pe venit: " + (Double.parseDouble(extractedValue + "") * 0.1) + ", remaining sum: " + (Double.parseDouble(extractedValue + "") * 0.9));
+                        else if (AntlrToExpression.getUserMode() == UserMode.JURIDIC)
+                            evaluations.add("Impozitul pe venit: " + (Double.parseDouble(extractedValue + "") * 0.12) + ", remaining sum: " + (Double.parseDouble(extractedValue + "") * 0.88));
                         break;
                     default:
                         evaluations.add("Function " + id + " not found");
@@ -63,7 +66,8 @@ public class ExpressionProcessor {
                 IfExpression ie = (IfExpression) e;
                 evaluations.add(getEvalResult(ie) + "");
 
-            } else { // Number or Variable or Addition or Multiplication or Division or Subtraction
+            }
+            else if (e instanceof Number || e instanceof Variable || e instanceof Addition || e instanceof  Multiplication || e instanceof Division || e instanceof Subtraction) { // Number or Variable or Addition or Multiplication or Division or Subtraction
                 String input = (e != null) ? e.toString() : "null";
 
                 Object result = getEvalResult(e);
@@ -188,7 +192,12 @@ public class ExpressionProcessor {
 
             switch (id) {
                 case "tva":
-                    double tvaResult = Double.parseDouble(extractedValue + "") * 0.2;
+                    double tvaResult;
+                    if (AntlrToExpression.userMode == UserMode.PHYSIC)
+                        tvaResult = Double.parseDouble(extractedValue + "") * 0.2;
+                    else
+                        tvaResult = Double.parseDouble(extractedValue + "") * 0.1;
+
                     return round(tvaResult, 2);
                 case "print":
                     return extractedValue;
