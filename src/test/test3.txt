@@ -1,1 +1,13 @@
-j = i + 23 : INTEGER
+usermode: physic
+
+i: INTEGER = 10000
+
+print("Physic")
+print("impozitulPeVenit: " + impozitulPeVenit(i))
+print("tva: " + tva(i))
+print("medicalInsurance: " + medicalInsurance(i))
+print("amenajareaTeritoriului: " + amenajareaTeritoriului(i))
+print("impozitProfit: " + impozitProfit(i))
+print("impozitImobiliar: " + impozitImobiliar(i))
+print("impozitFunciar: " + impozitFunciar(i))
+print("tvaRealizare: " + tvaRealizare(i))

@@ -41,6 +41,12 @@ public interface GrammarVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitAssignmentExpr(GrammarParser.AssignmentExprContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link GrammarParser#methodCall}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMethodCall(GrammarParser.MethodCallContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code Multiplication}
 	 * labeled alternative in {@link GrammarParser#expr}.
 	 * @param ctx the parse tree
@@ -89,6 +95,13 @@ public interface GrammarVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitSubtraction(GrammarParser.SubtractionContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code Concatenation}
+	 * labeled alternative in {@link GrammarParser#expr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitConcatenation(GrammarParser.ConcatenationContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code WhileExprStatement}
 	 * labeled alternative in {@link GrammarParser#expr}.
@@ -152,12 +165,6 @@ public interface GrammarVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitForExpression(GrammarParser.ForExpressionContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link GrammarParser#methodCall}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitMethodCall(GrammarParser.MethodCallContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code IfExpression}
 	 * labeled alternative in {@link GrammarParser#ifExpr}.

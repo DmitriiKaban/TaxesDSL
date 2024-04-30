@@ -6,7 +6,7 @@ grammar Grammar;
 }
 
 // Start Variable
-prog: (decl | expr | userMode | assignment)+ EOF        # Program
+prog: (decl | assignment | expr | userMode)+ EOF        # Program
     ;
 
 decl: ID ':' (INT_TYPE | DOUBLE_TYPE) '=' expr   # Declaration
@@ -17,6 +17,11 @@ userMode: USERMODE ':' ID # UserModeInstantiation
 
 assignment: ID ASSIGN expr # AssignmentExpr
     ;
+
+methodCall: (PRINT | TVA | IMPOZITULPEVENIT | IMPOZITFUNCIAR | IMPOZITIMOBILIAR | IMPOZITPROFIT | MEDICALINSURANCE | AMENAJAREATERITORIULUI | ASIGURARESOCIALA | TVAREALIZARE) LPAREN expr RPAREN
+    ;
+
+//methodCall: ID LPAREN expr RPAREN ; // Function call
 
 // * sooner than +, so that * can be evaluated first
 expr:
@@ -30,6 +35,7 @@ expr:
     | expr '/' expr              # Division
     | expr '+' expr              # Addition
     | expr '-' expr              # Subtraction
+    | expr ',' expr              # Concatenation // for functions
     | BOOL                       # Boolean
     | STRING                     # String
     | ID                         # Variable
@@ -43,9 +49,6 @@ whileExpr:
 // for should contain step
 forExpr:
     FOR ID (ASSIGN expr)? TO expr (STEP expr)? CLB (expr | assignment)* CRB # ForExpression
-    ;
-
-methodCall: (PRINT | TVA) LPAREN expr RPAREN
     ;
 
 ifExpr:
@@ -85,6 +88,14 @@ STEP  : 'step';
 
 PRINT    : 'print';
 TVA      : 'tva';
+IMPOZITULPEVENIT : 'impozitulPeVenit';
+IMPOZITPROFIT : 'impozitProfit';
+MEDICALINSURANCE : 'medicalInsurance';
+AMENAJAREATERITORIULUI : 'amenajareaTeritoriului';
+ASIGURARESOCIALA : 'asigurareSociala';
+IMPOZITIMOBILIAR : 'impozitImobiliar';
+IMPOZITFUNCIAR : 'impozitFunciar';
+TVAREALIZARE : 'tvaRealizare';
 FUNC     : 'function' ;
 USERMODE : 'usermode' ;
 

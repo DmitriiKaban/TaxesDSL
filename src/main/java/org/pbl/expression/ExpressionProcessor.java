@@ -26,6 +26,7 @@ public class ExpressionProcessor {
 
         for (Expression e : list) {
 
+
             if (e instanceof VariableDeclaration) {
 
                 VariableDeclaration vd = (VariableDeclaration) e;
@@ -103,8 +104,6 @@ public class ExpressionProcessor {
                 int i = (Integer) end;
 
                 WhileExpression we = new WhileExpression(new RelationalComparison(new Variable(id), Relational.LESS_THAN, new Number(i)), body);
-
-                System.out.println(we);
 
                 body = we.getBodyExpressions();
                 whileMethodSkeleton(evaluations, body, we);
@@ -259,7 +258,6 @@ public class ExpressionProcessor {
                 }
             } else {
 
-
                 throw new IllegalArgumentException("Invalid operation: cannot compare non-numeric values");
             }
         } else if (e instanceof StringExpression) {
@@ -274,22 +272,58 @@ public class ExpressionProcessor {
 
             switch (id) {
                 case "tva":
-                    return (Double.parseDouble(extractedValue + "") * 0.2);
+                    if (AntlrToExpression.getUserMode() == UserMode.PHYSIC)
+                        return round(Double.parseDouble(extractedValue + "") * 0.07, 2);
+                    else if (AntlrToExpression.getUserMode() == UserMode.JURIDIC)
+                        return round(Double.parseDouble(extractedValue + "") * 0.2, 2);
+                    break;
+                case "medicalInsurance":
+                    if (AntlrToExpression.getUserMode() == UserMode.PHYSIC)
+                        return round(Double.parseDouble(extractedValue + "") * 0.09, 2);
+                    else if (AntlrToExpression.getUserMode() == UserMode.JURIDIC)
+                        return -1; // no medical insurance for juridic persons
+                    break;
+                case "amenajareaTeritoriului":
+                    return -1; // depinde de localitate
+                case "impozitProfit":
+                    if (AntlrToExpression.getUserMode() == UserMode.PHYSIC)
+                        return -1; // no profit tax for physic persons
+                    else if (AntlrToExpression.getUserMode() == UserMode.JURIDIC)
+                        return round(Double.parseDouble(extractedValue + "") * 0.12, 2);
+                    break;
+                case "impozitImobiliar":
+                    if (AntlrToExpression.getUserMode() == UserMode.PHYSIC)
+                        return round(Double.parseDouble(extractedValue + "") * 0.004, 2);
+                    else if (AntlrToExpression.getUserMode() == UserMode.JURIDIC)
+                        return -1;
+                case "impozitFunciar":
+                    if (AntlrToExpression.getUserMode() == UserMode.PHYSIC)
+                        return -1;
+                    else if (AntlrToExpression.getUserMode() == UserMode.JURIDIC)
+                        return -1; // variabil
+                    break;
+                case "tvaRealizare":
+                    if (AntlrToExpression.getUserMode() == UserMode.PHYSIC)
+                        return -1;
+                    else if (AntlrToExpression.getUserMode() == UserMode.JURIDIC)
+                        return round(Double.parseDouble(extractedValue + "") * 0.2, 2);
+                    break;
                 case "print":
                     if (extractedValue instanceof String) {
                         return (extractedValue + "");
                     } else if (value instanceof Variable) {
-                            return (value + " = " + extractedValue);
+                        return (value + " = " + extractedValue);
                     } else if (extractedValue instanceof Double || extractedValue instanceof Integer) {
                         return (extractedValue + "");
                     }
                     break;
                 case "impozitulPeVenit":
                     if (AntlrToExpression.getUserMode() == UserMode.PHYSIC)
-                        return (Double.parseDouble(extractedValue + "") * 0.1);
+                        return round(Double.parseDouble(extractedValue + "") * 0.1, 2);
                     else if (AntlrToExpression.getUserMode() == UserMode.JURIDIC)
-                        return (Double.parseDouble(extractedValue + "") * 0.12);
+                        return round(Double.parseDouble(extractedValue + "") * 0.12, 2);
                     break;
+
                 default:
                     return ("Function " + id + " not found");
             }

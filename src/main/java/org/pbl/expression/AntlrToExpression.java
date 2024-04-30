@@ -114,10 +114,28 @@ public class AntlrToExpression extends GrammarBaseVisitor<Expression> {
         String id = "";
         if (ctx.PRINT() != null) {
             id = ctx.PRINT().getText();
-        }
-        else if (ctx.TVA() != null) {
+        } else if (ctx.TVA() != null) {
             id = ctx.TVA().getText();
+        } else if (ctx.MEDICALINSURANCE() != null) {
+            id = ctx.MEDICALINSURANCE().getText();
+        } else if (ctx.AMENAJAREATERITORIULUI() != null) {
+            id = ctx.AMENAJAREATERITORIULUI().getText();
+        } else if (ctx.ASIGURARESOCIALA() != null) {
+            id = ctx.ASIGURARESOCIALA().getText();
+        } else if (ctx.IMPOZITPROFIT() != null) {
+            id = ctx.IMPOZITPROFIT().getText();
+        } else if (ctx.IMPOZITIMOBILIAR() != null) {
+            id = ctx.IMPOZITIMOBILIAR().getText();
+        } else if (ctx.IMPOZITFUNCIAR() != null) {
+            id = ctx.IMPOZITFUNCIAR().getText();
+        } else if (ctx.IMPOZITFUNCIAR() != null) {
+            id = ctx.IMPOZITFUNCIAR().getText();
+        } else if (ctx.TVAREALIZARE() != null) {
+            id = ctx.TVAREALIZARE().getText();
+        } else if (ctx.IMPOZITULPEVENIT() != null) {
+            id = ctx.IMPOZITULPEVENIT().getText();
         }
+
         Expression expression = visit(ctx.getChild(2));
 
         return new FunctionCall(id, expression);
@@ -167,14 +185,12 @@ public class AntlrToExpression extends GrammarBaseVisitor<Expression> {
 
     @Override
     public Expression visitWhileExpression(GrammarParser.WhileExpressionContext ctx) {
-        Expression condition = visit(ctx.expr(0)); // The condition expression
 
-        // Create a list to hold body expressions
+        Expression condition = visit(ctx.expr(0));
+
         List<Expression> bodyExpressions = new ArrayList<>();
 
-
         for (int i = 1; i < ctx.expr().size(); i++) {
-
             bodyExpressions.add(visit(ctx.expr(i)));
         }
 
@@ -194,6 +210,8 @@ public class AntlrToExpression extends GrammarBaseVisitor<Expression> {
 
         return new WhileExpression(condition, bodyExpressions);
     }
+
+
 
     @Override
     public Expression visitForExpression(GrammarParser.ForExpressionContext ctx) {

@@ -1,8 +1,13 @@
 usermode: juridic
 
-i: INTEGER = 5
+i: INTEGER = 10000
 
-j : INTEGER = tva(i)
-
-print(j)
-
+print("Juridic")
+print("impozitulPeVenit: " + impozitulPeVenit(i))
+print("tva: " + tva(i))
+print("medicalInsurance: " + medicalInsurance(i))
+print("amenajareaTeritoriului: " + amenajareaTeritoriului(i))
+print("impozitProfit: " + impozitProfit(i))
+print("impozitImobiliar: " + impozitImobiliar(i))
+print("impozitFunciar: " + impozitFunciar(i))
+print("tvaRealizare: " + tvaRealizare(i))

@@ -58,6 +58,16 @@ public interface GrammarListener extends ParseTreeListener {
 	 */
 	void exitAssignmentExpr(GrammarParser.AssignmentExprContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link GrammarParser#methodCall}.
+	 * @param ctx the parse tree
+	 */
+	void enterMethodCall(GrammarParser.MethodCallContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link GrammarParser#methodCall}.
+	 * @param ctx the parse tree
+	 */
+	void exitMethodCall(GrammarParser.MethodCallContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code Multiplication}
 	 * labeled alternative in {@link GrammarParser#expr}.
 	 * @param ctx the parse tree
@@ -141,6 +151,18 @@ public interface GrammarListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitSubtraction(GrammarParser.SubtractionContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code Concatenation}
+	 * labeled alternative in {@link GrammarParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void enterConcatenation(GrammarParser.ConcatenationContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code Concatenation}
+	 * labeled alternative in {@link GrammarParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void exitConcatenation(GrammarParser.ConcatenationContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code WhileExprStatement}
 	 * labeled alternative in {@link GrammarParser#expr}.
@@ -249,16 +271,6 @@ public interface GrammarListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitForExpression(GrammarParser.ForExpressionContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link GrammarParser#methodCall}.
-	 * @param ctx the parse tree
-	 */
-	void enterMethodCall(GrammarParser.MethodCallContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link GrammarParser#methodCall}.
-	 * @param ctx the parse tree
-	 */
-	void exitMethodCall(GrammarParser.MethodCallContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code IfExpression}
 	 * labeled alternative in {@link GrammarParser#ifExpr}.
