@@ -250,6 +250,39 @@ public class AntlrToExpression extends GrammarBaseVisitor<Expression> {
     }
 
     @Override
+    public Expression visitForExpression(GrammarParser.ForExpressionContext ctx) {
+        String id = ctx.ID().getText();
+        Expression baseValue = visit(ctx.expr(0));
+        Expression step;
+        Expression endValue;
+
+        boolean hasAssignment = false;
+        boolean hasStep = false;
+
+        if (ctx.getChild(2).getText().equals("=")) {
+            hasAssignment = true;
+            endValue = visit(ctx.getChild(5));
+            step = visit(ctx.getChild(7));
+        } else {
+            endValue = visit(ctx.getChild(3));
+            step = visit(ctx.getChild(5));
+        }
+        if (ctx.getChild(6).getText().equals("step") || ctx.getChild(4).getText().equals("step")) {
+            hasStep = true;
+        }
+
+        int i = hasStep && hasAssignment ? 3 : hasStep || hasAssignment ? 2 : 1;
+
+        List<Expression> bodyExpressions = new ArrayList<>();
+        for (; i < ctx.expr().size(); i++) {
+            bodyExpressions.add(visit(ctx.expr(i)));
+        }
+
+
+        return new ForExpression(id, baseValue, endValue, step, bodyExpressions, hasAssignment, hasStep);
+    }
+
+    @Override
     public Expression visitBoolean(GrammarParser.BooleanContext ctx) {
         String boolText = ctx.getText(); 
         boolean boolValue = java.lang.Boolean.parseBoolean(boolText);
