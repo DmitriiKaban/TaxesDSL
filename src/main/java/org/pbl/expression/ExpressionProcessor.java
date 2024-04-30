@@ -78,6 +78,11 @@ public class ExpressionProcessor {
                 ForExpression fe = (ForExpression) e;
 
                 String id = fe.getId();
+
+                if (!values.containsKey(id)) {
+                    values.put(id, 0);
+                }
+
                 Expression baseValue = fe.getBaseValue();
                 Expression endValue = fe.getEndValue();
                 Expression step = fe.getStep();
