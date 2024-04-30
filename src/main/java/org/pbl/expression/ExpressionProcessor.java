@@ -31,6 +31,7 @@ public class ExpressionProcessor {
                 VariableDeclaration vd = (VariableDeclaration) e;
 
                 Object value = getEvalResult(vd.value);
+
                 values.put(vd.id, value);
             } else if (e instanceof FunctionCall) {
 
@@ -66,12 +67,39 @@ public class ExpressionProcessor {
                 IfExpression ie = (IfExpression) e;
                 evaluations.add(getEvalResult(ie) + "");
 
-            }
-            else if (e instanceof Number || e instanceof Variable || e instanceof Addition || e instanceof  Multiplication || e instanceof Division || e instanceof Subtraction) { // Number or Variable or Addition or Multiplication or Division or Subtraction
-                String input = (e != null) ? e.toString() : "null";
+            } else if (e instanceof WhileExpression) {
+
+                WhileExpression we = (WhileExpression) e;
+                List<Expression> body = we.getBodyExpressions();
+                Expression condition = we.getCondition();
+
+                while ((Boolean) getEvalResult(condition)) {
+
+                    for (Expression expression : body) {
+
+                        if (expression instanceof FunctionCall) {
+                            expression = new FunctionCall(((FunctionCall) expression).id, ((FunctionCall) expression).value);
+                            if (((FunctionCall) expression).id.equals("print")) {
+                                evaluations.add(getEvalResult(expression) + "");
+                            }
+                        } else
+                            getEvalResult(expression);
+                    }
+                }
+
+            }   else if (e instanceof Assignment) {
+
+                Assignment a = (Assignment) e;
+                String id = a.getId();
+                Expression expressionValue = a.getExpressionValue();
+                Object value = getEvalResult(expressionValue);
+                values.put(id, value);
+
+            } else if (e instanceof Number || e instanceof Variable || e instanceof Addition || e instanceof Multiplication || e instanceof Division || e instanceof Subtraction) { // Number or Variable or Addition or Multiplication or Division or Subtraction
+                String input = e.toString();
 
                 Object result = getEvalResult(e);
-                evaluations.add(input + " is " + result.toString());
+                evaluations.add(input + " is " + result);
             }
         }
 
@@ -114,9 +142,19 @@ public class ExpressionProcessor {
             Object left = getEvalResult(s.left);
             Object right = getEvalResult(s.right);
             if (left instanceof Double && right instanceof Double) {
-                return (Double) left - (Double) right;
+                double result = (Double) left - (Double) right;
+                return round(result, 4);
+            } else if (left instanceof Integer && right instanceof Double) {
+                double result = (Integer) left - (Double) right;
+                return round(result, 4);
+            } else if (left instanceof Double && right instanceof Integer) {
+                double result = (Double) left - (Integer) right;
+                return round(result, 4);
+            } else if (left instanceof Integer && right instanceof Integer) {
+                double result = (Integer) left - (Integer) right;
+                return round(result, 4);
             } else {
-                throw new IllegalArgumentException("Invalid operation: cannot subtract non-numeric values");
+                throw new IllegalArgumentException("Invalid operation: cannot add non-numeric values");
             }
         } else if (e instanceof Multiplication) {
             Multiplication m = (Multiplication) e;
@@ -186,24 +224,30 @@ public class ExpressionProcessor {
         } else if (e instanceof FunctionCall) {
 
             FunctionCall fc = (FunctionCall) e;
-            Expression value = fc.value;
             String id = fc.id;
+            Expression value = fc.value;
             Object extractedValue = getEvalResult(value);
 
             switch (id) {
                 case "tva":
-                    double tvaResult;
-                    if (AntlrToExpression.userMode == UserMode.PHYSIC)
-                        tvaResult = Double.parseDouble(extractedValue + "") * 0.2;
-                    else
-                        tvaResult = Double.parseDouble(extractedValue + "") * 0.1;
-
-                    return round(tvaResult, 2);
+                    return (Double.parseDouble(extractedValue + "") * 0.2);
                 case "print":
-                    return extractedValue;
+                    if (extractedValue instanceof String) {
+                        return (extractedValue + "");
+                    } else if (value instanceof Variable) {
+                            return (value + " = " + extractedValue);
+                    } else if (extractedValue instanceof Double || extractedValue instanceof Integer) {
+                        return (extractedValue + "");
+                    }
+                    break;
                 case "impozitulPeVenit":
-                    double impozitulResult = Double.parseDouble(extractedValue + "") * 0.12;
-                    return round(impozitulResult, 2);
+                    if (AntlrToExpression.getUserMode() == UserMode.PHYSIC)
+                        return (Double.parseDouble(extractedValue + "") * 0.1);
+                    else if (AntlrToExpression.getUserMode() == UserMode.JURIDIC)
+                        return (Double.parseDouble(extractedValue + "") * 0.12);
+                    break;
+                default:
+                    return ("Function " + id + " not found");
             }
             return getEvalResult(value);
         } else if (e instanceof IfExpression) {
@@ -224,6 +268,18 @@ public class ExpressionProcessor {
                 }
             }
 
+        } else if (e instanceof WhileExpression) {
+
+
+        } else if (e instanceof Assignment) {
+
+            Assignment a = (Assignment) e;
+            String id = a.getId();
+            Expression expressionValue = a.getExpressionValue();
+            Object value = getEvalResult(expressionValue);
+
+            values.put(id, value);
+            return value;
         }
 
         return null;

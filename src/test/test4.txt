@@ -1,9 +1,13 @@
 i : INTEGER = 6
 j : INTEGER = tva(i)
 
+//print(i)
+//print("j equals " + j)
+//print(i + j + " hey")
+//print(i * j)
+//print(i * j + 3)
+//print(i + j * 3)
+
 print(i)
-print("j equals " + j)
-print(i + j + " hey")
-print(i * j)
-print(i * j + 3)
-print(i + j * 3)
+i = i - 1
+print(i)

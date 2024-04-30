@@ -34,12 +34,12 @@ public interface GrammarVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitUserModeInstantiation(GrammarParser.UserModeInstantiationContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code MethodExprCall}
-	 * labeled alternative in {@link GrammarParser#expr}.
+	 * Visit a parse tree produced by the {@code AssignmentExpr}
+	 * labeled alternative in {@link GrammarParser#assignment}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitMethodExprCall(GrammarParser.MethodExprCallContext ctx);
+	T visitAssignmentExpr(GrammarParser.AssignmentExprContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code Multiplication}
 	 * labeled alternative in {@link GrammarParser#expr}.
@@ -62,12 +62,40 @@ public interface GrammarVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitVariable(GrammarParser.VariableContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code String}
+	 * labeled alternative in {@link GrammarParser#expr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitString(GrammarParser.StringContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code IfExprStatement}
+	 * labeled alternative in {@link GrammarParser#expr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitIfExprStatement(GrammarParser.IfExprStatementContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code MethodExprCall}
+	 * labeled alternative in {@link GrammarParser#expr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMethodExprCall(GrammarParser.MethodExprCallContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code Subtraction}
 	 * labeled alternative in {@link GrammarParser#expr}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitSubtraction(GrammarParser.SubtractionContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code WhileExprStatement}
+	 * labeled alternative in {@link GrammarParser#expr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitWhileExprStatement(GrammarParser.WhileExprStatementContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code Number}
 	 * labeled alternative in {@link GrammarParser#expr}.
@@ -82,20 +110,6 @@ public interface GrammarVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitDivision(GrammarParser.DivisionContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code String}
-	 * labeled alternative in {@link GrammarParser#expr}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitString(GrammarParser.StringContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code IfExprStatement}
-	 * labeled alternative in {@link GrammarParser#expr}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitIfExprStatement(GrammarParser.IfExprStatementContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code Boolean}
 	 * labeled alternative in {@link GrammarParser#expr}.
@@ -117,6 +131,13 @@ public interface GrammarVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitEqualityComparison(GrammarParser.EqualityComparisonContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code WhileExpression}
+	 * labeled alternative in {@link GrammarParser#whileExpr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitWhileExpression(GrammarParser.WhileExpressionContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link GrammarParser#methodCall}.
 	 * @param ctx the parse tree

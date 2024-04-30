@@ -6,7 +6,7 @@ grammar Grammar;
 }
 
 // Start Variable
-prog: (decl | expr | userMode)+ EOF        # Program
+prog: (decl | expr | userMode | assignment)+ EOF        # Program
     ;
 
 decl: ID ':' (INT_TYPE | DOUBLE_TYPE) '=' expr   # Declaration
@@ -15,9 +15,13 @@ decl: ID ':' (INT_TYPE | DOUBLE_TYPE) '=' expr   # Declaration
 userMode: USERMODE ':' ID # UserModeInstantiation
     ;
 
+assignment: ID ASSIGN expr # AssignmentExpr
+    ;
+
 // * sooner than +, so that * can be evaluated first
 expr:
-    methodCall                   # MethodExprCall
+    whileExpr                    # WhileExprStatement
+    | methodCall                 # MethodExprCall
     | ifExpr                     # IfExprStatement
     | expr EQULITYOP expr        # EqualityComparison
     | expr RELATIONALOP expr     # RelationalComparison
@@ -29,6 +33,10 @@ expr:
     | STRING                     # String
     | ID                         # Variable
     | NUM                        # Number
+    ;
+
+whileExpr:
+    WHILE expr CLB (expr | assignment)* CRB # WhileExpression
     ;
 
 methodCall: (PRINT | TVA) LPAREN expr RPAREN
@@ -51,16 +59,20 @@ COMMA    : ',' ;
 LPAREN   : '(' ;
 RPAREN   : ')' ;
 SEMI     : ';' ;
+ASSIGN   : '=' ;
 EQ       : '==' ;
 NEQ      : '!=' ;
 GT       : '>' ;
 LT       : '<' ;
 GTE      : '>=' ;
 LTE      : '<=' ;
+CRB      : '}' ;
+CLB      : '{' ;
 
 IF   : 'if';
 ELSE : 'else';
 THEN : 'then';
+WHILE   : 'while';
 
 PRINT    : 'print';
 TVA      : 'tva';

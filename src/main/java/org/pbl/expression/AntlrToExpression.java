@@ -143,9 +143,55 @@ public class AntlrToExpression extends GrammarBaseVisitor<Expression> {
     }
 
     @Override
+    public Expression visitAssignmentExpr(GrammarParser.AssignmentExprContext ctx) {
+
+        String id = ctx.getChild(0).getText();
+        Token idToken = ctx.ID().getSymbol();
+        int line = idToken.getLine();
+        int column = idToken.getCharPositionInLine();
+
+        if (!vars.contains(id)) {
+            semanticErrors.add("Error: Undeclared variable " + id + " at line: " + line + ", column: " + column);
+        }
+
+        Expression expression = visit(ctx.getChild(2));
+
+        return new Assignment(id, expression);
+    }
+
+    @Override
     public Expression visitIfExprStatement(GrammarParser.IfExprStatementContext ctx) {
 
         return new IfExpression(visit(ctx.ifExpr().getChild(1)), visit(ctx.ifExpr().getChild(3)), visit(ctx.ifExpr().getChild(5)));
+    }
+
+    @Override
+    public Expression visitWhileExpression(GrammarParser.WhileExpressionContext ctx) {
+        Expression condition = visit(ctx.expr(0)); // The condition expression
+
+        // Create a list to hold body expressions
+        List<Expression> bodyExpressions = new ArrayList<>();
+
+
+        for (int i = 1; i < ctx.expr().size(); i++) {
+
+            bodyExpressions.add(visit(ctx.expr(i)));
+        }
+
+        return new WhileExpression(condition, bodyExpressions);
+    }
+
+    @Override
+    public Expression visitWhileExprStatement(GrammarParser.WhileExprStatementContext ctx) {
+        Expression condition = visit(ctx.whileExpr().getChild(1)); // Condition expression
+
+        // Create a list to hold body expressions
+        List<Expression> bodyExpressions = new ArrayList<>();
+        for (int i = 3; i < ctx.whileExpr().getChildCount() - 1; i++) {
+            bodyExpressions.add(visit(ctx.whileExpr().getChild(i)));
+        }
+
+        return new WhileExpression(condition, bodyExpressions);
     }
 
     @Override

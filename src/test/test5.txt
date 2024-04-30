@@ -1,0 +1,31 @@
+i : INTEGER = 5
+j : INTEGER = tva(i)
+n : INTEGER = 1
+
+print("===")
+print("Before")
+print(i)
+print(j)
+print("===")
+
+while i > j {
+    j = j + 1
+    i = i - 1
+
+    print("Iteration # " + n)
+    print("i value is: " + i)
+    print("j value is: " + j)
+    n = n + 1
+}
+
+print("===")
+print("After")
+print(i)
+print(j)
+print("===")
+
+
+//if FALSE then
+    //print("hello")
+//else
+    //print("FALSE value")
