@@ -166,6 +166,18 @@ public interface GrammarListener extends ParseTreeListener {
 	 */
 	void exitNumber(GrammarParser.NumberContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code ForExprStatement}
+	 * labeled alternative in {@link GrammarParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void enterForExprStatement(GrammarParser.ForExprStatementContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code ForExprStatement}
+	 * labeled alternative in {@link GrammarParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void exitForExprStatement(GrammarParser.ForExprStatementContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code Division}
 	 * labeled alternative in {@link GrammarParser#expr}.
 	 * @param ctx the parse tree
@@ -225,6 +237,18 @@ public interface GrammarListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitWhileExpression(GrammarParser.WhileExpressionContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code ForExpression}
+	 * labeled alternative in {@link GrammarParser#forExpr}.
+	 * @param ctx the parse tree
+	 */
+	void enterForExpression(GrammarParser.ForExpressionContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code ForExpression}
+	 * labeled alternative in {@link GrammarParser#forExpr}.
+	 * @param ctx the parse tree
+	 */
+	void exitForExpression(GrammarParser.ForExpressionContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link GrammarParser#methodCall}.
 	 * @param ctx the parse tree

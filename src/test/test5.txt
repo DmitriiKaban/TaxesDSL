@@ -8,21 +8,42 @@ print(i)
 print(j)
 print("===")
 
-while i > j {
-    j = j + 1
-    i = i - 1
+            while i > j {
+                j = j + 1
+                i = i - 1
 
-    print("Iteration # " + n)
-    print("i value is: " + i)
-    print("j value is: " + j)
-    n = n + 1
-}
+                print("Iteration # " + n)
+                print("i value is: " + i)
+                print("j value is: " + j)
+                n = n + 1
+            }
 
 print("===")
 print("After")
 print(i)
 print(j)
 print("===")
+
+print("Without step and assignment")
+for i to 10 {
+    print("i value is: " + i)
+}
+
+print("Without step with assignment 11")
+for i = 11 to 15 {
+    print("i value is: " + i)
+}
+
+print("Without assignment with step 2")
+for i = 16 to 20 step 2 {
+    print("i value is: " + i)
+}
+
+
+print("With step 3 and without assignment")
+for i to 25 step 3 {
+    print("i value is: " + i)
+}
 
 
 //if FALSE then

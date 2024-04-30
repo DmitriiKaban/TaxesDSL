@@ -104,6 +104,13 @@ public interface GrammarVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitNumber(GrammarParser.NumberContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code ForExprStatement}
+	 * labeled alternative in {@link GrammarParser#expr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitForExprStatement(GrammarParser.ForExprStatementContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code Division}
 	 * labeled alternative in {@link GrammarParser#expr}.
 	 * @param ctx the parse tree
@@ -138,6 +145,13 @@ public interface GrammarVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitWhileExpression(GrammarParser.WhileExpressionContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code ForExpression}
+	 * labeled alternative in {@link GrammarParser#forExpr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitForExpression(GrammarParser.ForExpressionContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link GrammarParser#methodCall}.
 	 * @param ctx the parse tree

@@ -71,23 +71,40 @@ public class ExpressionProcessor {
 
                 WhileExpression we = (WhileExpression) e;
                 List<Expression> body = we.getBodyExpressions();
-                Expression condition = we.getCondition();
+                whileMethodSkeleton(evaluations, body, we);
 
-                while ((Boolean) getEvalResult(condition)) {
+            } else if (e instanceof ForExpression) {
 
-                    for (Expression expression : body) {
+                ForExpression fe = (ForExpression) e;
 
-                        if (expression instanceof FunctionCall) {
-                            expression = new FunctionCall(((FunctionCall) expression).id, ((FunctionCall) expression).value);
-                            if (((FunctionCall) expression).id.equals("print")) {
-                                evaluations.add(getEvalResult(expression) + "");
-                            }
-                        } else
-                            getEvalResult(expression);
-                    }
+                String id = fe.getId();
+                Expression baseValue = fe.getBaseValue();
+                Expression endValue = fe.getEndValue();
+                Expression step = fe.getStep();
+                Object end = getEvalResult(endValue);
+                List<Expression> body = fe.getBodyExpressions();
+
+                if (fe.hasAssignment()) {
+                    baseValue = new Assignment(id, baseValue);
+                    values.put(id, getEvalResult(baseValue));
                 }
 
-            }   else if (e instanceof Assignment) {
+                if (fe.hasStep()) {
+                    body.add(new Assignment(id, new Addition(new Variable(id), step)));
+                } else {
+                    body.add(new Assignment(id, new Addition(new Variable(id), new Number(1))));
+                }
+
+                int i = (Integer) end;
+
+                WhileExpression we = new WhileExpression(new RelationalComparison(new Variable(id), Relational.LESS_THAN, new Number(i)), body);
+
+                System.out.println(we);
+
+                body = we.getBodyExpressions();
+                whileMethodSkeleton(evaluations, body, we);
+
+            } else if (e instanceof Assignment) {
 
                 Assignment a = (Assignment) e;
                 String id = a.getId();
@@ -106,12 +123,32 @@ public class ExpressionProcessor {
         return evaluations;
     }
 
+    private void whileMethodSkeleton(List<String> evaluations, List<Expression> body, WhileExpression we) {
+        Expression condition = we.getCondition();
+
+        while ((Boolean) getEvalResult(condition)) {
+
+            for (Expression expression : body) {
+
+                if (expression instanceof FunctionCall) {
+                    expression = new FunctionCall(((FunctionCall) expression).id, ((FunctionCall) expression).value);
+                    if (((FunctionCall) expression).id.equals("print")) {
+                        evaluations.add(getEvalResult(expression) + "");
+                    }
+                } else
+                    getEvalResult(expression);
+            }
+        }
+    }
+
     private Object getEvalResult(Expression e) {
+
         if (e instanceof Number) {
             Number n = (Number) e;
             return n.num;
         } else if (e instanceof Variable) {
             Variable v = (Variable) e;
+
             return values.get(v.id); // variable value from symbol table
         } else if (e instanceof Addition) {
             Addition a = (Addition) e;
@@ -216,6 +253,8 @@ public class ExpressionProcessor {
                         return leftVal >= rightVal;
                 }
             } else {
+
+
                 throw new IllegalArgumentException("Invalid operation: cannot compare non-numeric values");
             }
         } else if (e instanceof StringExpression) {
@@ -269,7 +308,6 @@ public class ExpressionProcessor {
             }
 
         } else if (e instanceof WhileExpression) {
-
 
         } else if (e instanceof Assignment) {
 

@@ -21,6 +21,7 @@ assignment: ID ASSIGN expr # AssignmentExpr
 // * sooner than +, so that * can be evaluated first
 expr:
     whileExpr                    # WhileExprStatement
+    | forExpr                    # ForExprStatement
     | methodCall                 # MethodExprCall
     | ifExpr                     # IfExprStatement
     | expr EQULITYOP expr        # EqualityComparison
@@ -37,6 +38,11 @@ expr:
 
 whileExpr:
     WHILE expr CLB (expr | assignment)* CRB # WhileExpression
+    ;
+
+// for should contain step
+forExpr:
+    FOR ID (ASSIGN expr)? TO expr (STEP expr)? CLB (expr | assignment)* CRB # ForExpression
     ;
 
 methodCall: (PRINT | TVA) LPAREN expr RPAREN
@@ -73,6 +79,9 @@ IF   : 'if';
 ELSE : 'else';
 THEN : 'then';
 WHILE   : 'while';
+FOR   : 'for';
+TO    : 'to';
+STEP  : 'step';
 
 PRINT    : 'print';
 TVA      : 'tva';
