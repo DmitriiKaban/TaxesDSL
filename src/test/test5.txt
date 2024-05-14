@@ -16,6 +16,7 @@ while i > j {
     print("i value is: " + i)
     print("j value is: " + j)
     n = n + 1
+
 }
 
 print("===")
@@ -44,9 +45,3 @@ print("With step 3 and without assignment")
 for i to 25 step 3 {
     print("i value is: " + i)
 }
-
-
-//if FALSE then
-    //print("hello")
-//else
-    //print("FALSE value")

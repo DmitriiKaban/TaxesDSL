@@ -7,8 +7,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static java.lang.Math.round;
-
 public class ExpressionProcessor {
 
     List<Expression> list;
@@ -38,23 +36,26 @@ public class ExpressionProcessor {
 
                 FunctionCall fc = (FunctionCall) e;
                 String id = fc.id;
-                Expression value = fc.value;
-                Object extractedValue = getEvalResult(value);
+                List<Expression> values = fc.value;
+                Object extractedValue;
 
                 switch (id) {
                     case "tva":
+                        extractedValue = getEvalResult(values.get(0));
                         evaluations.add("Value " + extractedValue + " has TVA: " + (Double.parseDouble(extractedValue + "") * 0.2));
                         break;
                     case "print":
+                        extractedValue = getEvalResult(values.get(0));
                         if (extractedValue instanceof String) {
                             evaluations.add(extractedValue + "");
-                        } else if (value instanceof Variable) {
-                            evaluations.add(value + " = " + extractedValue);
+                        } else if (values.get(0) instanceof Variable) {
+                            evaluations.add(values.get(0) + " = " + extractedValue);
                         } else if (extractedValue instanceof Double || extractedValue instanceof Integer) {
                             evaluations.add(extractedValue + "");
                         }
                         break;
                     case "impozitulPeVenit":
+                        extractedValue = getEvalResult(values.get(0));
                         if (AntlrToExpression.getUserMode() == UserMode.PHYSIC)
                             evaluations.add("Impozitul pe venit: " + (Double.parseDouble(extractedValue + "") * 0.1) + ", remaining sum: " + (Double.parseDouble(extractedValue + "") * 0.9));
                         else if (AntlrToExpression.getUserMode() == UserMode.JURIDIC)
@@ -267,57 +268,68 @@ public class ExpressionProcessor {
 
             FunctionCall fc = (FunctionCall) e;
             String id = fc.id;
-            Expression value = fc.value;
-            Object extractedValue = getEvalResult(value);
+            List<Expression> values = fc.value;
+            Object extractedValue;
 
             switch (id) {
                 case "tva":
+                    extractedValue = getEvalResult(values.get(0));
                     if (AntlrToExpression.getUserMode() == UserMode.PHYSIC)
                         return round(Double.parseDouble(extractedValue + "") * 0.07, 2);
                     else if (AntlrToExpression.getUserMode() == UserMode.JURIDIC)
                         return round(Double.parseDouble(extractedValue + "") * 0.2, 2);
                     break;
                 case "medicalInsurance":
+                    extractedValue = getEvalResult(values.get(0));
                     if (AntlrToExpression.getUserMode() == UserMode.PHYSIC)
                         return round(Double.parseDouble(extractedValue + "") * 0.09, 2);
                     else if (AntlrToExpression.getUserMode() == UserMode.JURIDIC)
                         return -1; // no medical insurance for juridic persons
                     break;
+
                 case "amenajareaTeritoriului":
-                    return -1; // depinde de localitate
+                    Object price = getEvalResult(values.get(0));
+                    Object area = getEvalResult(values.get(1));
+                    return round(Double.parseDouble(price + "") * Double.parseDouble(area + ""), 2); // depinde de localitate
                 case "impozitProfit":
+                    extractedValue = getEvalResult(values.get(0));
                     if (AntlrToExpression.getUserMode() == UserMode.PHYSIC)
                         return -1; // no profit tax for physic persons
                     else if (AntlrToExpression.getUserMode() == UserMode.JURIDIC)
                         return round(Double.parseDouble(extractedValue + "") * 0.12, 2);
                     break;
                 case "impozitImobiliar":
+                    extractedValue = getEvalResult(values.get(0));
                     if (AntlrToExpression.getUserMode() == UserMode.PHYSIC)
                         return round(Double.parseDouble(extractedValue + "") * 0.004, 2);
                     else if (AntlrToExpression.getUserMode() == UserMode.JURIDIC)
                         return -1;
                 case "impozitFunciar":
+                    extractedValue = getEvalResult(values.get(0));
                     if (AntlrToExpression.getUserMode() == UserMode.PHYSIC)
                         return -1;
                     else if (AntlrToExpression.getUserMode() == UserMode.JURIDIC)
                         return -1; // variabil
                     break;
                 case "tvaRealizare":
+                    extractedValue = getEvalResult(values.get(0));
                     if (AntlrToExpression.getUserMode() == UserMode.PHYSIC)
                         return -1;
                     else if (AntlrToExpression.getUserMode() == UserMode.JURIDIC)
                         return round(Double.parseDouble(extractedValue + "") * 0.2, 2);
                     break;
                 case "print":
+                    extractedValue = getEvalResult(values.get(0));
                     if (extractedValue instanceof String) {
                         return (extractedValue + "");
-                    } else if (value instanceof Variable) {
-                        return (value + " = " + extractedValue);
+                    } else if (values.get(0) instanceof Variable) {
+                        return (values.get(0) + " = " + extractedValue);
                     } else if (extractedValue instanceof Double || extractedValue instanceof Integer) {
                         return (extractedValue + "");
                     }
                     break;
                 case "impozitulPeVenit":
+                    extractedValue = getEvalResult(values.get(0));
                     if (AntlrToExpression.getUserMode() == UserMode.PHYSIC)
                         return round(Double.parseDouble(extractedValue + "") * 0.1, 2);
                     else if (AntlrToExpression.getUserMode() == UserMode.JURIDIC)
@@ -327,7 +339,7 @@ public class ExpressionProcessor {
                 default:
                     return ("Function " + id + " not found");
             }
-            return getEvalResult(value);
+            return getEvalResult(values.get(0));
         } else if (e instanceof IfExpression) {
 
             IfExpression ie = (IfExpression) e;

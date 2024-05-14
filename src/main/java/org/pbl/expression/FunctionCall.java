@@ -1,11 +1,13 @@
 package org.pbl.expression;
 
+import java.util.List;
+
 public class FunctionCall extends Expression {
 
     public String id;
-    public Expression value;
+    public List<Expression> value;
 
-    public FunctionCall(String id, Expression expression) {
+    public FunctionCall(String id, List<Expression> expression) {
         this.id = id;
         this.value = expression;
     }

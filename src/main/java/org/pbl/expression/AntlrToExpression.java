@@ -136,9 +136,12 @@ public class AntlrToExpression extends GrammarBaseVisitor<Expression> {
             id = ctx.IMPOZITULPEVENIT().getText();
         }
 
-        Expression expression = visit(ctx.getChild(2));
+        List<Expression> expressions = new ArrayList<>();
+        for (int i = 2; i < ctx.getChildCount(); i += 2) {
+            expressions.add(visit(ctx.getChild(i)));
+        }
 
-        return new FunctionCall(id, expression);
+        return new FunctionCall(id, expressions);
     }
 
     @Override

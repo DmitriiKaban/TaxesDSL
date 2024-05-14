@@ -18,7 +18,7 @@ userMode: USERMODE ':' ID # UserModeInstantiation
 assignment: ID ASSIGN expr # AssignmentExpr
     ;
 
-methodCall: (PRINT | TVA | IMPOZITULPEVENIT | IMPOZITFUNCIAR | IMPOZITIMOBILIAR | IMPOZITPROFIT | MEDICALINSURANCE | AMENAJAREATERITORIULUI | ASIGURARESOCIALA | TVAREALIZARE) LPAREN expr RPAREN
+methodCall: (PRINT | TVA | IMPOZITULPEVENIT | IMPOZITFUNCIAR | IMPOZITIMOBILIAR | IMPOZITPROFIT | MEDICALINSURANCE | AMENAJAREATERITORIULUI | ASIGURARESOCIALA | TVAREALIZARE) LPAREN expr (COMMA expr)* RPAREN
     ;
 
 //methodCall: ID LPAREN expr RPAREN ; // Function call
@@ -35,7 +35,6 @@ expr:
     | expr '/' expr              # Division
     | expr '+' expr              # Addition
     | expr '-' expr              # Subtraction
-    | expr ',' expr              # Concatenation // for functions
     | BOOL                       # Boolean
     | STRING                     # String
     | ID                         # Variable
