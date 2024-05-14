@@ -152,18 +152,6 @@ public interface GrammarListener extends ParseTreeListener {
 	 */
 	void exitSubtraction(GrammarParser.SubtractionContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code Concatenation}
-	 * labeled alternative in {@link GrammarParser#expr}.
-	 * @param ctx the parse tree
-	 */
-	void enterConcatenation(GrammarParser.ConcatenationContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code Concatenation}
-	 * labeled alternative in {@link GrammarParser#expr}.
-	 * @param ctx the parse tree
-	 */
-	void exitConcatenation(GrammarParser.ConcatenationContext ctx);
-	/**
 	 * Enter a parse tree produced by the {@code WhileExprStatement}
 	 * labeled alternative in {@link GrammarParser#expr}.
 	 * @param ctx the parse tree
