@@ -1,0 +1,69 @@
+package org.pbl.util;
+
+import org.ini4j.Ini;
+
+import java.io.File;
+import java.io.IOException;
+
+public class Util {
+
+    public static String tvaPhysic = "";
+//    public static String tvaJuridic = "";
+//    public static String medicalInsurancePhysic = "";
+    public static String medicalInsuranceJuridic = "";
+    public static String amenajareaTeritoriuluiPhysic = "";
+//    public static String amenajareaTeritoriuluiJuridic = "";
+//    public static String impozitProfitPhysic = "";
+//    public static String impozitProfitJuridic = "";
+    public static String impozitImobiliarPhysic = "";
+    public static String impozitImobiliarJuridic = "";
+    public static String impozitFunciarPhysic = "";
+    public static String impozitFunciarJuridic = "";
+    public static String impozitulPeVenitPhysic = "";
+    public static String impozitulPeVenitJuridic = "";
+
+    public static int loadValuesFromFile() {
+        Ini ini;
+        File tempFile = new File("config/config.ini");
+        if (tempFile.exists()) {
+
+            System.out.println("Trying to read file: " + tempFile.getAbsolutePath());
+            try {
+                ini = new Ini(tempFile);
+                extractDataFromIni(ini);
+            } catch (IOException e) {
+                System.out.println("Error reading file: " + tempFile.getAbsolutePath());
+                return 0;
+            }
+        }
+        return 1;
+    }
+
+    private static void extractDataFromIni(Ini ini) {
+
+        tvaPhysic = getOrDefault(ini, "taxes_values_physic", "tvaPhysic", "-1");
+//        tvaJuridic = getOrDefault(ini, "taxes_values_juridic", "tvaJuridic", "-1");
+//        medicalInsurancePhysic = getOrDefault(ini, "taxes_values_physic", "medicalInsurancePhysic", "-1");
+        medicalInsuranceJuridic = getOrDefault(ini, "taxes_values_juridic", "medicalInsuranceJuridic", "-1");
+        amenajareaTeritoriuluiPhysic = getOrDefault(ini, "taxes_values_physic", "amenajareaTeritoriuluiPhysic", "-1");
+//        amenajareaTeritoriuluiJuridic = getOrDefault(ini, "taxes_values_juridic", "amenajareaTeritoriuluiJuridic", "-1");
+//        impozitProfitPhysic = getOrDefault(ini, "taxes_values_physic", "impozitProfitPhysic", "-1");
+//        impozitProfitJuridic = getOrDefault(ini, "taxes_values_juridic", "impozitProfitJuridic", "-1");
+        impozitImobiliarPhysic = getOrDefault(ini, "taxes_values_physic", "impozitImobiliarPhysic", "-1");
+        impozitImobiliarJuridic = getOrDefault(ini, "taxes_values_juridic", "impozitImobiliarJuridic", "-1");
+        impozitFunciarPhysic = getOrDefault(ini, "taxes_values_physic", "impozitFunciarPhysic", "-1");
+        impozitFunciarJuridic = getOrDefault(ini, "taxes_values_juridic", "impozitFunciarJuridic", "-1");
+//        tvaRealizarePhysic = getOrDefault(ini, "taxes_values_physic", "tvaRealizarePhysic", "-1");
+//        tvaRealizareJuridic = getOrDefault(ini, "taxes_values_juridic", "tvaRealizareJuridic", "-1");
+        impozitulPeVenitPhysic = getOrDefault(ini, "taxes_values_physic", "impozitulPeVenitPhysic", "-1");
+        impozitulPeVenitJuridic = getOrDefault(ini, "taxes_values_juridic", "impozitulPeVenitJuridic", "-1");
+
+//        System.out.println(impozitFunciarJuridic);
+    }
+
+    private static String getOrDefault(Ini ini, String section, String key, String defaultValue) {
+        String value = ini.get(section, key);
+        return value != null ? value : defaultValue;
+    }
+
+}

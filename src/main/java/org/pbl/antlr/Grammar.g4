@@ -94,7 +94,6 @@ AMENAJAREATERITORIULUI : 'amenajareaTeritoriului';
 ASIGURARESOCIALA : 'asigurareSociala';
 IMPOZITIMOBILIAR : 'impozitImobiliar';
 IMPOZITFUNCIAR : 'impozitFunciar';
-TVAREALIZARE : 'tvaRealizare';
 FUNC     : 'function' ;
 USERMODE : 'usermode' ;
 

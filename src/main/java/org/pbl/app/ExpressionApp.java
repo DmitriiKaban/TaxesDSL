@@ -10,6 +10,7 @@ import org.pbl.expression.AntlrToProgram;
 import org.pbl.expression.ExpressionProcessor;
 import org.pbl.expression.MyErrorListener;
 import org.pbl.expression.Program;
+import org.pbl.util.Util;
 
 import java.io.IOException;
 
@@ -17,6 +18,8 @@ public class ExpressionApp {
 
     public static void main(String[] args) {
 
+        if (Util.loadValuesFromFile() == 0)
+            return;
         if (args.length != 1) {
             System.err.println("Usage: file name");
         } else {

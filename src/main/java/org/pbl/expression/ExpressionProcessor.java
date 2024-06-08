@@ -1,5 +1,7 @@
 package org.pbl.expression;
 
+import org.pbl.util.Util;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
@@ -274,49 +276,37 @@ public class ExpressionProcessor {
             switch (id) {
                 case "tva":
                     extractedValue = getEvalResult(values.get(0));
-                    if (AntlrToExpression.getUserMode() == UserMode.PHYSIC)
-                        return round(Double.parseDouble(extractedValue + "") * 0.07, 2);
-                    else if (AntlrToExpression.getUserMode() == UserMode.JURIDIC)
-                        return round(Double.parseDouble(extractedValue + "") * 0.2, 2);
-                    break;
+//                    if (AntlrToExpression.getUserMode() == UserMode.PHYSIC)
+                    return round(Double.parseDouble(extractedValue + "") * Double.parseDouble(Util.tvaPhysic), 2);
+//                    else if (AntlrToExpression.getUserMode() == UserMode.JURIDIC)
+//                        return round(Double.parseDouble(extractedValue + "") * Double.parseDouble(Util.tvaJuridic), 2);
+//                    break;
                 case "medicalInsurance":
                     extractedValue = getEvalResult(values.get(0));
                     if (AntlrToExpression.getUserMode() == UserMode.PHYSIC)
-                        return round(Double.parseDouble(extractedValue + "") * 0.09, 2);
+                        return -1;
                     else if (AntlrToExpression.getUserMode() == UserMode.JURIDIC)
-                        return -1; // no medical insurance for juridic persons
+                        return round(Double.parseDouble(extractedValue + "") * Double.parseDouble(Util.medicalInsuranceJuridic), 2);
                     break;
 
                 case "amenajareaTeritoriului":
+                    if (AntlrToExpression.getUserMode() == UserMode.JURIDIC)
+                        return -1;
                     Object price = getEvalResult(values.get(0));
-                    Object area = getEvalResult(values.get(1));
-                    return round(Double.parseDouble(price + "") * Double.parseDouble(area + ""), 2); // depinde de localitate
-                case "impozitProfit":
-                    extractedValue = getEvalResult(values.get(0));
-                    if (AntlrToExpression.getUserMode() == UserMode.PHYSIC)
-                        return -1; // no profit tax for physic persons
-                    else if (AntlrToExpression.getUserMode() == UserMode.JURIDIC)
-                        return round(Double.parseDouble(extractedValue + "") * 0.12, 2);
-                    break;
+                    return round(Double.parseDouble(price + "") * Double.parseDouble(Util.amenajareaTeritoriuluiPhysic), 2); // depinde de localitate
                 case "impozitImobiliar":
                     extractedValue = getEvalResult(values.get(0));
                     if (AntlrToExpression.getUserMode() == UserMode.PHYSIC)
-                        return round(Double.parseDouble(extractedValue + "") * 0.004, 2);
+                        return round(Double.parseDouble(extractedValue + "") * Double.parseDouble(Util.impozitImobiliarPhysic), 2);
                     else if (AntlrToExpression.getUserMode() == UserMode.JURIDIC)
-                        return -1;
+                        return round(Double.parseDouble(extractedValue + "") * Double.parseDouble(Util.impozitImobiliarJuridic), 2);
                 case "impozitFunciar":
                     extractedValue = getEvalResult(values.get(0));
+                    Object area = getEvalResult(values.get(1));
                     if (AntlrToExpression.getUserMode() == UserMode.PHYSIC)
-                        return -1;
+                        return round(Double.parseDouble(extractedValue + "") * Double.parseDouble(Util.impozitFunciarPhysic) * Double.parseDouble(area + ""), 2);
                     else if (AntlrToExpression.getUserMode() == UserMode.JURIDIC)
-                        return -1; // variabil
-                    break;
-                case "tvaRealizare":
-                    extractedValue = getEvalResult(values.get(0));
-                    if (AntlrToExpression.getUserMode() == UserMode.PHYSIC)
-                        return -1;
-                    else if (AntlrToExpression.getUserMode() == UserMode.JURIDIC)
-                        return round(Double.parseDouble(extractedValue + "") * 0.2, 2);
+                        return round(Double.parseDouble(extractedValue + "") * Double.parseDouble(Util.impozitFunciarJuridic) * Double.parseDouble(area + ""), 2);
                     break;
                 case "print":
                     extractedValue = getEvalResult(values.get(0));
@@ -331,11 +321,12 @@ public class ExpressionProcessor {
                 case "impozitulPeVenit":
                     extractedValue = getEvalResult(values.get(0));
                     if (AntlrToExpression.getUserMode() == UserMode.PHYSIC)
-                        return round(Double.parseDouble(extractedValue + "") * 0.1, 2);
-                    else if (AntlrToExpression.getUserMode() == UserMode.JURIDIC)
-                        return round(Double.parseDouble(extractedValue + "") * 0.12, 2);
+                        return round(Double.parseDouble(extractedValue + "") * Double.parseDouble(Util.impozitulPeVenitPhysic), 2);
+                    else if (AntlrToExpression.getUserMode() == UserMode.JURIDIC) {
+                        System.out.println(Util.impozitulPeVenitJuridic);
+                        return round(Double.parseDouble(extractedValue + "") * Double.parseDouble(Util.impozitulPeVenitJuridic), 2);
+                    }
                     break;
-
                 default:
                     return ("Function " + id + " not found");
             }
