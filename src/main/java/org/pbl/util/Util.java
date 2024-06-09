@@ -4,6 +4,8 @@ import org.ini4j.Ini;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class Util {
 
@@ -32,6 +34,20 @@ public class Util {
                 ini = new Ini(tempFile);
                 extractDataFromIni(ini);
             } catch (IOException e) {
+                System.out.println("Error reading file: " + tempFile.getAbsolutePath());
+                return 0;
+            }
+        }else {
+            Path currentRelativePath = Paths.get("");
+            String s = currentRelativePath.toAbsolutePath().toString();
+
+            tempFile = new File(s + "\\config.ini");
+
+            System.out.println("Trying to read file: " + tempFile.getAbsolutePath());
+            try {
+                ini = new Ini(tempFile);
+                extractDataFromIni(ini);
+            } catch (IOException ex) {
                 System.out.println("Error reading file: " + tempFile.getAbsolutePath());
                 return 0;
             }
