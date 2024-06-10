@@ -57,22 +57,22 @@ public class Util {
 
     private static void extractDataFromIni(Ini ini) {
 
-        tvaPhysic = getOrDefault(ini, "taxes_values_physic", "tvaPhysic", "-1");
+        tvaPhysic = getOrDefault(ini, "taxes_values_physic", "tva", "-1");
 //        tvaJuridic = getOrDefault(ini, "taxes_values_juridic", "tvaJuridic", "-1");
 //        medicalInsurancePhysic = getOrDefault(ini, "taxes_values_physic", "medicalInsurancePhysic", "-1");
-        medicalInsuranceJuridic = getOrDefault(ini, "taxes_values_juridic", "medicalInsuranceJuridic", "-1");
-        amenajareaTeritoriuluiPhysic = getOrDefault(ini, "taxes_values_physic", "amenajareaTeritoriuluiPhysic", "-1");
+        medicalInsuranceJuridic = getOrDefault(ini, "taxes_values_juridic", "medicalInsurance", "-1");
+        amenajareaTeritoriuluiPhysic = getOrDefault(ini, "taxes_values_physic", "amenajareaTeritoriului", "-1");
 //        amenajareaTeritoriuluiJuridic = getOrDefault(ini, "taxes_values_juridic", "amenajareaTeritoriuluiJuridic", "-1");
 //        impozitProfitPhysic = getOrDefault(ini, "taxes_values_physic", "impozitProfitPhysic", "-1");
 //        impozitProfitJuridic = getOrDefault(ini, "taxes_values_juridic", "impozitProfitJuridic", "-1");
-        impozitImobiliarPhysic = getOrDefault(ini, "taxes_values_physic", "impozitImobiliarPhysic", "-1");
-        impozitImobiliarJuridic = getOrDefault(ini, "taxes_values_juridic", "impozitImobiliarJuridic", "-1");
-        impozitFunciarPhysic = getOrDefault(ini, "taxes_values_physic", "impozitFunciarPhysic", "-1");
-        impozitFunciarJuridic = getOrDefault(ini, "taxes_values_juridic", "impozitFunciarJuridic", "-1");
+        impozitImobiliarPhysic = getOrDefault(ini, "taxes_values_physic", "impozitImobiliar", "-1");
+        impozitImobiliarJuridic = getOrDefault(ini, "taxes_values_juridic", "impozitImobiliar", "-1");
+        impozitFunciarPhysic = getOrDefault(ini, "taxes_values_physic", "impozitFunciar", "-1");
+        impozitFunciarJuridic = getOrDefault(ini, "taxes_values_juridic", "impozitFunciar", "-1");
 //        tvaRealizarePhysic = getOrDefault(ini, "taxes_values_physic", "tvaRealizarePhysic", "-1");
 //        tvaRealizareJuridic = getOrDefault(ini, "taxes_values_juridic", "tvaRealizareJuridic", "-1");
-        impozitulPeVenitPhysic = getOrDefault(ini, "taxes_values_physic", "impozitulPeVenitPhysic", "-1");
-        impozitulPeVenitJuridic = getOrDefault(ini, "taxes_values_juridic", "impozitulPeVenitJuridic", "-1");
+        impozitulPeVenitPhysic = getOrDefault(ini, "taxes_values_physic", "impozitulPeVenit", "-1");
+        impozitulPeVenitJuridic = getOrDefault(ini, "taxes_values_juridic", "impozitulPeVenit", "-1");
 
 //        System.out.println(impozitFunciarJuridic);
     }

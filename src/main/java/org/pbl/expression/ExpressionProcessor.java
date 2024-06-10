@@ -44,7 +44,7 @@ public class ExpressionProcessor {
                 switch (id) {
                     case "tva":
                         extractedValue = getEvalResult(values.get(0));
-                        evaluations.add("Value " + extractedValue + " has TVA: " + (Double.parseDouble(extractedValue + "") * 0.2));
+                        evaluations.add("Value " + extractedValue + " has TVA: " + (Double.parseDouble(extractedValue + "") * Double.parseDouble(Util.tvaPhysic)));
                         break;
                     case "print":
                         extractedValue = getEvalResult(values.get(0));
@@ -59,9 +59,9 @@ public class ExpressionProcessor {
                     case "impozitulPeVenit":
                         extractedValue = getEvalResult(values.get(0));
                         if (AntlrToExpression.getUserMode() == UserMode.PHYSIC)
-                            evaluations.add("Impozitul pe venit: " + (Double.parseDouble(extractedValue + "") * 0.1) + ", remaining sum: " + (Double.parseDouble(extractedValue + "") * 0.9));
+                            evaluations.add("Impozitul pe venit: " + (Double.parseDouble(extractedValue + "") * Double.parseDouble(Util.impozitulPeVenitPhysic)) + ", remaining sum: " + (Double.parseDouble(extractedValue + "") * (1 - Double.parseDouble(Util.impozitulPeVenitPhysic))));
                         else if (AntlrToExpression.getUserMode() == UserMode.JURIDIC)
-                            evaluations.add("Impozitul pe venit: " + (Double.parseDouble(extractedValue + "") * 0.12) + ", remaining sum: " + (Double.parseDouble(extractedValue + "") * 0.88));
+                            evaluations.add("Impozitul pe venit: " + (Double.parseDouble(extractedValue + "") * Double.parseDouble(Util.impozitulPeVenitJuridic)) + ", remaining sum: " + (Double.parseDouble(extractedValue + "") * (1 - Double.parseDouble(Util.impozitulPeVenitJuridic))));
                         break;
                     default:
                         evaluations.add("Function " + id + " not found");
@@ -276,11 +276,7 @@ public class ExpressionProcessor {
             switch (id) {
                 case "tva":
                     extractedValue = getEvalResult(values.get(0));
-//                    if (AntlrToExpression.getUserMode() == UserMode.PHYSIC)
                     return round(Double.parseDouble(extractedValue + "") * Double.parseDouble(Util.tvaPhysic), 2);
-//                    else if (AntlrToExpression.getUserMode() == UserMode.JURIDIC)
-//                        return round(Double.parseDouble(extractedValue + "") * Double.parseDouble(Util.tvaJuridic), 2);
-//                    break;
                 case "medicalInsurance":
                     extractedValue = getEvalResult(values.get(0));
                     if (AntlrToExpression.getUserMode() == UserMode.PHYSIC)
