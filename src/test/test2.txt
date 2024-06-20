@@ -12,4 +12,3 @@ print("amenajareaTeritoriului: " + amenajareaTeritoriului(numberOfEmployees))
 print("impozitImobiliar for total assets(" + totalAssets + ") is " + impozitImobiliar(totalAssets))
 print("impozitFunciar for " + numberOfEmployees + " employees will be " + impozitFunciar(averageIncome, 10))
 print("tva for " + valueForTVA + "$ will be: " + tva(valueForTVA) + "$")
-
