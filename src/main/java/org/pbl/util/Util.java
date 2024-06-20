@@ -9,11 +9,11 @@ import java.nio.file.Paths;
 
 public class Util {
 
-    public static String tvaPhysic = "";
-//    public static String tvaJuridic = "";
-//    public static String medicalInsurancePhysic = "";
-    public static String medicalInsuranceJuridic = "";
-    public static String amenajareaTeritoriuluiPhysic = "";
+//    public static String tvaPhysic = "";
+    public static String tvaJuridic = "";
+    public static String medicalInsurancePhysic = "";
+//    public static String medicalInsuranceJuridic = "";
+    public static String amenajareaTeritoriuluiJuridic = "";
 //    public static String amenajareaTeritoriuluiJuridic = "";
 //    public static String impozitProfitPhysic = "";
 //    public static String impozitProfitJuridic = "";
@@ -57,11 +57,11 @@ public class Util {
 
     private static void extractDataFromIni(Ini ini) {
 
-        tvaPhysic = getOrDefault(ini, "taxes_values_physic", "tva", "-1");
-//        tvaJuridic = getOrDefault(ini, "taxes_values_juridic", "tvaJuridic", "-1");
-//        medicalInsurancePhysic = getOrDefault(ini, "taxes_values_physic", "medicalInsurancePhysic", "-1");
-        medicalInsuranceJuridic = getOrDefault(ini, "taxes_values_juridic", "medicalInsurance", "-1");
-        amenajareaTeritoriuluiPhysic = getOrDefault(ini, "taxes_values_physic", "amenajareaTeritoriului", "-1");
+//        tvaPhys = getOrDefault(ini, "taxes_values_physic", "tva", "-1");
+        tvaJuridic = getOrDefault(ini, "taxes_values_juridic", "tva", "-1");
+        medicalInsurancePhysic = getOrDefault(ini, "taxes_values_physic", "medicalInsurance", "-1");
+//        medicalInsuranceJuridic = getOrDefault(ini, "taxes_values_juridic", "medicalInsurance", "-1");
+        amenajareaTeritoriuluiJuridic = getOrDefault(ini, "taxes_values_juridic", "amenajareaTeritoriului", "-1");
 //        amenajareaTeritoriuluiJuridic = getOrDefault(ini, "taxes_values_juridic", "amenajareaTeritoriuluiJuridic", "-1");
 //        impozitProfitPhysic = getOrDefault(ini, "taxes_values_physic", "impozitProfitPhysic", "-1");
 //        impozitProfitJuridic = getOrDefault(ini, "taxes_values_juridic", "impozitProfitJuridic", "-1");

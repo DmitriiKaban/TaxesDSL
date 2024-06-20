@@ -1,11 +1,15 @@
-usermode: physic
+usermode: juridic
 
-i: INTEGER = 10000
+averageIncome: INTEGER = 10000
+numberOfEmployees: INTEGER = 10
+valueForTVA: INTEGER = 300
+totalAssets: INTEGER = 1000000
 
-print("Physic")
-print("impozitulPeVenit: " + impozitulPeVenit(i))
-print("tva: " + tva(i))
-print("medicalInsurance: " + medicalInsurance(i))
-print("amenajareaTeritoriului: " + amenajareaTeritoriului(i))
-print("impozitImobiliar: " + impozitImobiliar(i))
-print("impozitFunciar: " + impozitFunciar(i, 10))
+print("Juridic: there are " + numberOfEmployees + " employees with an average income of " + averageIncome)
+print("impozitulPeVenit average: " + impozitulPeVenit(averageIncome))
+print("impozitulPeVenit total: " + impozitulPeVenit(averageIncome) * numberOfEmployees)
+print("amenajareaTeritoriului: " + amenajareaTeritoriului(numberOfEmployees))
+print("impozitImobiliar for total assets(" + totalAssets + ") is " + impozitImobiliar(totalAssets))
+print("impozitFunciar for " + numberOfEmployees + " employees will be " + impozitFunciar(averageIncome, 10))
+print("tva for " + valueForTVA + "$ will be: " + tva(valueForTVA) + "$")
+
